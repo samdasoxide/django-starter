@@ -9,7 +9,6 @@ project_name: project
 
 django_settings_module: "{{ project_name }}.settings.{{ env }}"
 
-
 # apt
 
 apt_cache_valid_time: 3600
@@ -18,12 +17,12 @@ apt_cache_valid_time: 3600
 
 postgresql_databases:
   - name: "{{ project_name }}"
-    owner: "{{ project_name }}" # optional; specify the owner of the database
+    owner: "{{ project_name }}"
 
 postgresql_users:
   - name: "{{ project_name }}"
     pass: some_super_secret_password
-    encrypted: no       # denotes if the password is already encrypted.
+    encrypted: no
 
 # postgresql_database_extensions:
 #   - db: "{{ project_name }}"
@@ -45,3 +44,7 @@ postgresql_ext_install_dev_headers: yes
 
 postgresql_ext_install_postgis: no
 postgresql_ext_postgis_version: "2.1"
+
+# redis
+
+redis_appendonly: "yes" # durability for using redis as queue
