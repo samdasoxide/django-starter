@@ -1,0 +1,37 @@
+# Playbook for installing nodejs and the required node modules
+---
+
+- name: check apt-https-transport
+  stat:
+    path: /usr/lib/apt/methods/https
+  register: apt_https_transport
+
+- name: install apt-transport-https (if missing)
+  apt:
+    pkg: apt-transport-https
+    state: installed
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  when: not apt_https_transport.stat.exists
+  become: yes
+
+- name: import the NodeSource GPG key into apt
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+  become: yes
+
+- name: add NodeSource deb repository
+  apt_repository:
+    repo: 'deb https://deb.nodesource.com/node_5.x {{ ansible_distribution_release }} main'
+    state: present
+  become: yes
+
+- name: add NodeSource deb-src repository
+  apt_repository:
+    repo: 'deb-src https://deb.nodesource.com/node_5.x {{ ansible_distribution_release }} main'
+    state: present
+  become: yes
+
+- name: install nodejs
+  apt: name=nodejs state=latest update_cache=yes
+  become: yes

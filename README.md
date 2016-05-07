@@ -58,6 +58,6 @@
     ```bash
     $ vagrant up
     $ vagrant ssh
-    $ cd smsdb/smsdb
+    $ cd project/project
     $ ./manage.py runserver 0.0.0.0:8000
     ```
