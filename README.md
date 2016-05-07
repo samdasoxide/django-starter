@@ -52,8 +52,13 @@
     $ npm install
     $ gulp
     ```
+ 7. Install the required 3rd party playbooks
 
- 7. Bring the vagrant box up and start the development server
+    ```bash
+    $ sudo ansible-galaxy install -r provisioning/requirements.yml
+    ```
+
+ 8. Bring the vagrant box up and start the development server
 
     ```bash
     $ vagrant up
