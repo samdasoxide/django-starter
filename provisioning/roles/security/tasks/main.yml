@@ -1,0 +1,23 @@
+# Security role
+# -------------
+# Handles secure configuration of sshd, firewall configuration, etc.
+---
+
+- name: disallow password authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify: restart ssh
+
+- name: disallow challenge response authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^ChallengeResponseAuthentication"
+    line: "ChallengeResponseAuthentication no"
+  notify: restart ssh
+
+- name: configure firewall
+  include: firewall.yml

@@ -1,0 +1,9 @@
+# Playbook for provisioning local development machines using vagrant
+---
+
+- hosts: development
+  become_method: sudo
+  roles:
+    - {role: base}
+    - {role: ANXS.postgresql, become: yes}
+    - {role: django}

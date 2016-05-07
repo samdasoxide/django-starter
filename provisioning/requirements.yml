@@ -1,0 +1,5 @@
+# Requirements file specifying the 3rd party roles required by the project
+---
+
+- src: ANXS.postgresql
+  version: v1.4.0

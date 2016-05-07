@@ -1,0 +1,53 @@
+# Base role that configures the common packages and settings required by
+# all machines.
+---
+
+# apt
+
+- name: ensure aptitude is installed
+  apt: name=aptitude state=present
+  become: true
+
+- name: ensure apt cache is updated
+  apt: update_cache=yes cache_valid_time={{ apt_cache_valid_time }}
+  become: true
+
+- name: ensure existing packages are upgraded safely
+  apt: upgrade=safe
+  become: true
+
+- name: install base apt packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  with_items: "{{ base_apt_packages }}"
+  become: true
+
+- name: ensure unattended upgrades are configured
+  copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/
+  become: true
+
+# python
+
+- name: Install global python packages
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ base_python_packages }}"
+  become: true
+
+# misc
+
+- name: set hostname
+  hostname: name={{ hostname }}
+  become: true
+
+- name: ensure ssh agent socket environment variable persists when sudoing
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    insertafter: "^Defaults"
+    line: "Defaults\tenv_keep += \"SSH_AUTH_SOCK\""
+    validate: "visudo -cf %s"
+  become: true

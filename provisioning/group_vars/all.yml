@@ -1,0 +1,47 @@
+# Defines variables for all hosts
+---
+
+# general
+
+project_name: project
+
+# django
+
+django_settings_module: "{{ project_name }}.settings.{{ env }}"
+
+
+# apt
+
+apt_cache_valid_time: 3600
+
+# postgresql
+
+postgresql_databases:
+  - name: "{{ project_name }}"
+    owner: "{{ project_name }}" # optional; specify the owner of the database
+
+postgresql_users:
+  - name: "{{ project_name }}"
+    pass: some_super_secret_password
+    encrypted: no       # denotes if the password is already encrypted.
+
+# postgresql_database_extensions:
+#   - db: "{{ project_name }}"
+#     extensions:
+#       - postgis
+
+postgresql_version: 9.4
+postgresql_encoding: 'UTF-8'
+postgresql_locale: 'en_GB.UTF-8'
+
+postgresql_admin_user: "postgres"
+postgresql_default_auth_method: "trust"
+
+postgresql_cluster_name: "main"
+postgresql_cluster_reset: false
+postgresql_ext_install_dev_headers: yes
+
+# postgresql:postgis
+
+postgresql_ext_install_postgis: no
+postgresql_ext_postgis_version: "2.1"

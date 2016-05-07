@@ -1,0 +1,26 @@
+# Installs and configures the ufw (iptables wrapper) for simple firewall
+# configuration.
+---
+
+- name: install ufw package
+  apt:
+    package: ufw
+    state: latest
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  become: true
+
+- name: enable ssh access through firewall
+  ufw: rule=allow name=ssh
+  become: true
+
+- name: enable http access through firewall
+  ufw: rule=allow port=80 proto=tcp
+  become: true
+
+- name: enable https access through firewall
+  ufw: rule=allow port=443 proto=tcp
+  become: true
+
+- name: enable ufw with default policy deny
+  ufw: state=enabled policy=deny
+  become: true

@@ -1,0 +1,41 @@
+# Handles the set-up of Django
+---
+
+- name: install system package dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  with_items:
+    # requests[security]
+    - python-cffi
+    - libffi-dev
+    - libssl-dev
+    # geo django
+    - libgeos-dev
+    # wagtail
+    - libjpeg-dev
+    - libtiff-dev
+    - zlib1g-dev
+    - libfreetype6-dev
+    - liblcms2-dev
+  become: yes
+
+- name: install requirements
+  pip:
+    requirements: "{{ base_dir }}/requirements/{{ env }}.txt"
+    virtualenv: "{{ virtualenv_path }}"
+
+- name: django migrate
+  django_manage:
+    command: migrate
+    settings: "{{ django_settings_module }}"
+    virtualenv: "{{ virtualenv_path }}"
+    app_path: "{{ django_dir }}"
+
+- name: django collectstatic
+  django_manage:
+    command: collectstatic
+    settings: "{{ django_settings_module }}"
+    virtualenv: "{{ virtualenv_path }}"
+    app_path: "{{ django_dir }}"
