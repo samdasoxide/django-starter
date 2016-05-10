@@ -17,6 +17,11 @@
   become: yes
   notify: restart ssh
 
+- name: template /etc/pam.d/sudo
+  template: src=su dest=/etc/pam.d/sudo
+  become: yes
+  notify: restart ssh
+
 - name: ensure users are synced
   user:
     name: "{{ item.name }}"

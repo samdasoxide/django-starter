@@ -5,5 +5,5 @@ PAGER   DEFAULT="less"
 LESS    DEFAULT="-XEFqgiMR -z-3"
 
 {% for key, value in env_vars|dictsort %}
-{{ key|upper }} DEFAULT="{{ value }}"
+{{ key|upper }} DEFAULT={{ value | quote }}
 {% endfor %}

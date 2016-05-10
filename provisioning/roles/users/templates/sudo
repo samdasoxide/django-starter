@@ -1,0 +1,11 @@
+# vim: set ft=sh :
+
+# Read environment variables from pam_env's default files, /etc/environment
+# and /etc/security/pam_env.conf.
+session       required   pam_env.so readenv=1 user_readenv=1
+
+#%PAM-1.0
+
+@include common-auth
+@include common-account
+@include common-session-noninteractive

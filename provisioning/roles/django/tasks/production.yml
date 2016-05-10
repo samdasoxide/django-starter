@@ -7,7 +7,7 @@
 
 - name: ensure application log directory exists
   file:
-    path: /var/log/django/{{ project_name }}
+    path: "/var/log/django/{{ project_name }}"
     owner: "{{ deployment_user }}"
     group: "{{ deployment_user }}"
     state: directory
