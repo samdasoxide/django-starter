@@ -1,0 +1,9 @@
+# vim: set ft=sh :
+
+EDITOR  DEFAULT="vim"
+PAGER   DEFAULT="less"
+LESS    DEFAULT="-XEFqgiMR -z-3"
+
+{% for key, value in env_vars|dictsort %}
+{{ key|upper }} DEFAULT="{{ value }}"
+{% endfor %}

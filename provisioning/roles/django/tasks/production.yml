@@ -1,0 +1,51 @@
+# Handles production specific django configuration
+---
+
+- name: ensure django log directory exists
+  file: path=/var/log/django/ state=directory
+  become: true
+
+- name: ensure application log directory exists
+  file:
+    path: /var/log/django/{{ project_name }}
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+    state: directory
+  become: true
+
+- name: ensure django projects dir exists
+  file:
+    path: "{{ django_projects_dir }}"
+    state: directory
+  become: true
+
+- name: ensure project base directory exists
+  file:
+    path: "{{ base_dir }}"
+    state: directory
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+  become: true
+
+- name: ensure virtualenvs directory exists
+  file:
+    path: "{{ django_projects_dir }}/virtualenvs"
+    state: directory
+  become: true
+
+- name: ensure github.com is a known host
+  lineinfile:
+    dest: /etc/ssh/ssh_known_hosts
+    state: present
+    create: yes
+    regexp: "^github\\.com"
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+  become: true
+
+- name: pull ishamba from repository
+  git:
+    repo: "{{ git_uri }}"
+    dest: "{{ base_dir }}"
+    version: "{{ git_version }}"
+  become: true
+  become_user: "{{ deployment_user }}"

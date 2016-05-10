@@ -10,6 +10,7 @@
     regexp: "^PasswordAuthentication"
     line: "PasswordAuthentication no"
   notify: restart ssh
+  become: true
 
 - name: disallow challenge response authentication
   lineinfile:
@@ -18,6 +19,7 @@
     regexp: "^ChallengeResponseAuthentication"
     line: "ChallengeResponseAuthentication no"
   notify: restart ssh
+  become: true
 
 - name: configure firewall
   include: firewall.yml

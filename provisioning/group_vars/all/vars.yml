@@ -1,0 +1,120 @@
+# Defines variables for all hosts
+---
+
+#
+# general
+#
+
+project_name: project
+
+git_uri: git@github.com:RocketPod/django-starter.git
+git_version: master
+
+#
+# users
+#
+
+# sftp only users (jailed to SFTP in the users $HOME/files directory)
+sftp_users: []
+
+# list of public keys for use when creating users
+# public_keys:
+#   foo_user: public_key_here
+
+# apt
+
+apt_cache_valid_time: 3600
+
+#
+# postgresql
+#
+
+postgresql_databases:
+  - name: "{{ deployment_database.name }}"
+    owner: "{{ deployment_database.username }}"
+
+postgresql_users:
+  - name: "{{ deployment_database.username }}"
+    pass: "{{ deployment_database.pass }}"
+    encrypted: "{{ deployment_database.encrypted }}"
+
+# postgresql_database_extensions:
+#   - db: "{{ project_name }}"
+#     extensions:
+#       - postgis
+
+postgresql_version: 9.4
+postgresql_encoding: 'UTF-8'
+postgresql_locale: 'en_GB.UTF-8'
+
+postgresql_admin_user: "postgres"
+postgresql_default_auth_method: "trust"
+
+postgresql_cluster_name: "main"
+postgresql_cluster_reset: false
+postgresql_ext_install_dev_headers: yes
+
+# postgresql:postgis
+
+postgresql_ext_install_postgis: "{{ deployment_database.postgis }}"
+postgresql_ext_postgis_version: "2.1"
+
+#
+# redis
+#
+
+redis_appendonly: "yes" # durability for using redis as queue
+
+#
+# django
+#
+
+django_settings_module: "{{ project_name }}.settings.{{ env }}"
+django_log_dir: "/var/log/django/{{ project_name }}"
+
+env_vars:
+  # general
+  cfg_app_name: "{{ project_name }}"
+  cfg_server_name: "{{ fqdn }}"
+  cfg_environment_type: "production"
+  cfg_secret_key: "{{ django_secret_key }}"
+  cfg_wsgi_module: "{{ project_name }}.wsgi"
+
+  # db
+  cfg_db_type: "postgres"
+  cfg_db_engine: "django.db.backends.postgresql_psycopg2"
+  cfg_db_host: "/var/run/postgresql/"
+  cfg_db_name: "{{ deployment_database.name }}"
+  cfg_db_user: "{{ deployment_database.username }}"
+  cfg_db_password: "{{ deployment_database.pass }}"
+
+  # email
+  cfg_email_prefix: "[{{ project_name }}] "
+  cfg_email_sender: "{{ project_name }}@{{ fqdn }}"
+  cfg_email_subject_prefix: "[{{ project_name }}] "
+  cfg_server_email: "{{ project_name }}@{{ fqdn }}"
+
+  cfg_log_dir: "{{ django_log_dir }}"
+  cfg_log_file: "{{ django_log_dir }}/error.log"
+  cfg_uwsgi_log_file: "{{ django_log_dir }}/uwsgi.log"
+
+  # static / media
+  cfg_media_url: "/media/"
+  cfg_media_dir: "{{ base_dir }}/media"
+
+  cfg_static_url: "/static/"
+  cfg_static_dir: "{{ base_dir }}/static"
+
+  # cache
+  cfg_redis_url: "redis://localhost:6379/0"
+  cfg_cache_backend: "django_redis.cache.RedisCache"
+
+  django_settings_module: "{{ django_settings_module }}"
+  home: "/home/{{ deployment_user }}"
+  path: "{{ virtualenv_path }}/bin:/bin/:/usr/bin/:$PATH"
+  pgdatabase: "{{ deployment_database.name }}"
+  pghost: "/var/run/postgresql/"
+  pguser: "{{ deployment_database.username }}"
+  pythondontwritebytecode: "1"
+  pythonpath: "{{ django_dir }}"
+  tmpdir: "{{ base_dir }}/tmp"

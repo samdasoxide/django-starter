@@ -1,0 +1,13 @@
+# Playbook for provisioning production machines
+---
+
+- hosts: production
+  become_method: sudo
+  roles:
+    - {role: base}
+    - {role: security}
+    - {role: users}
+    - {role: ANXS.postgresql, become: yes}
+    - {role: geerlingguy.redis, become: yes}
+    - {role: nodejs}
+    - {role: django}

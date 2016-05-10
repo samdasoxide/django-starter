@@ -14,4 +14,3 @@ django_dir: "{{ base_dir }}/{{ project_name }}"
 
 virtualenv_root: /home/vagrant/.virtualenvs
 virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"
-

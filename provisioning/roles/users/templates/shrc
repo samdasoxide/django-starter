@@ -1,0 +1,39 @@
+# vim:set sw=4 ts=4 et ft=sh :
+
+. {{ virtualenv_path }}/bin/activate
+
+PATH={{ virtualenv_path}}/bin:$PATH
+export PATH
+
+if [ "`uname`" = FreeBSD -o ! -z "$BASH_VERSION" ]; then
+    alias ls='ls -F'
+    alias ll='ls -lh'
+
+    if [ ! -z "$BASH_VERSION" ]; then
+        PROMPT_DIRTRIM=3
+        PS1='\n[\h:{{ project_name }}] \w$(__git_ps1)\n{\!} \u> '
+    else
+        PS1='\h:\w\$ '
+    fi
+fi
+
+manage() {
+    "{{ django_dir }}/manage.py" "$@"
+}
+
+dj() {
+    manage "$@"
+}
+
+restart() {
+    /bin/sh -c '
+tail -f -n0 /var/log/uwsgi/{{ project_name }}.log & tailpid=$!
+touch -h /etc/uwsgi-emperor/vassals/{{ project_name }}.ini
+sleep 7
+kill $tailpid; wait
+'
+}
+
+uwsgitop() {
+    command /usr/local/bin/uwsgitop $HOME/{{ project_name }}.stats
+}

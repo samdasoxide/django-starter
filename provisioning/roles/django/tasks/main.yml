@@ -1,5 +1,8 @@
 # Handles the set-up of Django
 ---
+- name: run production configuration
+  include: production.yml
+  when: env == 'production'
 
 - name: install system package dependencies
   apt:

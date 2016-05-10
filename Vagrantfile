@@ -4,41 +4,81 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    # Base box to build off, and download URL for when it doesn't exist on the user's system already
+
+    # Debian 8 box
     config.vm.box = "debian/jessie64"
 
-    # Boot with a GUI so you can see the screen. (Default is headless)
-    # config.vm.boot_mode = :gui
-
-    # Forward a port from the guest to the host, which allows for outside
-    # computers to access the VM, whereas host only networking does not.
-    config.vm.network "forwarded_port", guest: 8000, host: 8000
-
+    # Modify virtualbox opts
     config.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", "1024"]
     end
 
-
-    # Share an additional folder to the guest VM. The first argument is
-    # an identifier, the second is the path on the guest to mount the
-    # folder, and the third is the path on the host to the actual folder.
+    # Sync project folder
     config.vm.synced_folder ".", "/home/vagrant/project"
 
     # Forward ssh agent to share host credentials with the guest VM.
     config.ssh.forward_agent = true
 
-    # Provision the vagrant box with Ansible
-    config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "provisioning/vagrant.yml"
-        ansible.groups = {
-            "development" => ["default"],
-        }
-        ansible.host_key_checking = false
+    # Development machine
+    config.vm.define "development" do |development|
+        development.vm.network "forwarded_port", guest: 8000, host: 8000
 
-        ansible.extra_vars = {
-            ansible_ssh_user: 'vagrant',
-            ansible_connection: 'ssh',
-            ansible_ssh_args: '-o ForwardAgent=yes'
-        }
+        # Provision with vagrant.yml
+        development.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/vagrant.yml"
+            ansible.groups = {
+                "development" => ["development"],
+            }
+            ansible.host_key_checking = false
+            ansible.vault_password_file = ".vault_pass.txt"
+
+            ansible.extra_vars = {
+                ansible_ssh_user: 'vagrant',
+                ansible_connection: 'ssh',
+                ansible_ssh_args: '-o ForwardAgent=yes'
+            }
+        end
+    end
+
+    # Production machine
+    config.vm.define "production" do |production|
+        production.vm.network "forwarded_port", guest: 80, host: 8080
+
+        # Provision with vagrant.yml
+        production.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/production.yml"
+            ansible.groups = {
+                "production" => ["production"],
+            }
+            ansible.host_key_checking = false
+            ansible.vault_password_file = ".vault_pass.txt"
+
+            ansible.extra_vars = {
+                ansible_ssh_user: 'vagrant',
+                ansible_connection: 'ssh',
+                ansible_ssh_args: '-o ForwardAgent=yes'
+            }
+        end
+    end
+
+    # Staging machine
+    config.vm.define "staging" do |staging|
+        staging.vm.network "forwarded_port", guest: 80, host: 9000
+
+        # Provision with vagrant.yml
+        staging.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/staging.yml"
+            ansible.groups = {
+                "staging" => ["staging"],
+            }
+            ansible.host_key_checking = false
+            ansible.vault_password_file = ".vault_pass.txt"
+
+            ansible.extra_vars = {
+                ansible_ssh_user: 'vagrant',
+                ansible_connection: 'ssh',
+                ansible_ssh_args: '-o ForwardAgent=yes'
+            }
+        end
     end
 end

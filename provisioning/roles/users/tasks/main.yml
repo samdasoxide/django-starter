@@ -1,0 +1,84 @@
+# In production, ensure all users have been added, along with any public keys.
+# If any user's state is "absent", they will be removed. If any keys are
+# removed, they will be deleted.
+---
+
+- name: ensure deployment group exists
+  group: name=deployment state=present
+  become: yes
+
+- name: template /etc/pam.d/cron
+  template: src=cron dest=/etc/pam.d/cron
+  become: yes
+  notify: restart ssh
+
+- name: template /etc/pam.d/su
+  template: src=su dest=/etc/pam.d/su
+  become: yes
+  notify: restart ssh
+
+- name: ensure users are synced
+  user:
+    name: "{{ item.name }}"
+    force: yes
+    remove: yes
+    password: "{{ item.shadow_pass | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    groups: "{{ item.groups | default('sudo') }}"
+  with_items:
+    - "{{ users }}"
+  become: true
+
+- name: ensure user public keys are synced
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.public_keys | join('\n') }}"
+    state: present
+    exclusive: yes
+  with_items:
+    - "{{ users }}"
+  when: item.public_keys is defined and item.public_keys | length > 0
+  become: true
+
+- name: ensure env vars present in ~/.pam_environment for deployment user
+  template:
+    src: pam_environment
+    dest: "/home/{{ deployment_user }}/.pam_environment"
+  become: true
+  become_user: "{{ deployment_user }}"
+
+
+- name: configure .profile for deployment user
+  template: src=profile dest=/home/{{ deployment_user }}/.profile
+  become: true
+  become_user: "{{ deployment_user }}"
+
+- name: setup .shrc for deployment user
+  template: src=shrc dest=/home/{{ deployment_user }}/.shrc
+  become: true
+  become_user: "{{ deployment_user }}"
+
+- name: create deployment user ~/.ssh/
+  file:
+    dest: "/home/{{ deployment_user }}/.ssh/"
+    state: directory
+    mode: "u=rwx,g=,o="
+    owner: "{{ deployment_user }}"
+  become: true
+  become_user: "{{ deployment_user }}"
+
+- name: ensure deployment key exists
+  copy:
+    content: "{{ deployment_private_key }}"
+    dest: "/home/{{ deployment_user }}/.ssh/id_rsa"
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+    mode: "u=rw,g=,o="
+  become: true
+  become_user: "{{ deployment_user }}"
+
+# configure sftp users if necessary
+- name: ensure sftp users configured
+  include: sftp.yml
+  when: sftp_users

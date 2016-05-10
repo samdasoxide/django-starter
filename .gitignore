@@ -96,6 +96,7 @@ ENV/
 
 # ansible
 *.retry
+/.vault_pass.txt
 
 # public directory
 /public/static/*
@@ -105,3 +106,7 @@ ENV/
 
 # node
 node_modules/
+
+# tmp directory
+/tmp/*
+!/tmp/.gitkeep
