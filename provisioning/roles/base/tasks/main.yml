@@ -20,6 +20,7 @@
   apt:
     name: "{{ item }}"
     state: latest
+    update_cache: yes
     cache_valid_time: "{{ apt_cache_valid_time }}"
   with_items: "{{ base_apt_packages }}"
   become: true
@@ -35,12 +36,6 @@
     name: "{{ item }}"
     state: latest
   with_items: "{{ base_python_packages }}"
-  become: true
-
-# misc
-
-- name: set hostname
-  hostname: name={{ hostname }}
   become: true
 
 - name: ensure ssh agent socket environment variable persists when sudoing

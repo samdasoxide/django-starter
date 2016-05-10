@@ -1,0 +1,24 @@
+# Handles the installation of nginx from the nginx apt repository
+---
+
+- name: import the nginx GPG key into apt
+  apt_key:
+    url: http://nginx.org/keys/nginx_signing.key
+    state: present
+  become: yes
+
+- name: add nginx deb repository
+  apt_repository:
+    repo: 'deb http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx'
+    state: present
+  become: yes
+
+- name: add nginx deb-src repository
+  apt_repository:
+    repo: 'deb-src http://nginx.org/packages/{{ ansible_distribution|lower }}/ {{ ansible_distribution_release }} nginx'
+    state: present
+  become: yes
+
+- name: install nginx package
+  apt: name=nginx state=latest update_cache=yes
+  become: yes

@@ -7,5 +7,4 @@
 
 env: staging
 
-hostname: "{{ project_name }}-staging"
 fqdn: staging.example.com

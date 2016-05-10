@@ -6,7 +6,6 @@
 
 env: production
 
-hostname: "{{ project_name }}-production"
 fqdn: example.com
 
 #

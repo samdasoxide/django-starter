@@ -67,7 +67,9 @@ redis_appendonly: "yes" # durability for using redis as queue
 
 django_settings_module: "{{ project_name }}.settings.{{ env }}"
 django_log_dir: "/var/log/django/{{ project_name }}"
+
 uwsgi_log_file: "{{ django_log_dir }}/uwsgi.log"
+uwsgi_socket_path: "/home/{{ deployment_user }}/{{ project_name }}.sock"
 
 # these environmental variables are made available to the deployment user
 # to allow for easy production env configuration
@@ -126,7 +128,39 @@ env_vars:
   pythonpath: "{{ django_dir }}"
 
 #
+# nginx
+#
+
+nginx_dir: /etc/nginx
+nginx_confd_dir: "{{nginx_dir}}/conf.d"
+nginx_app_log_dir: "/var/log/nginx/{{ project_name }}"
+
+ssl: no
+dhe_param_path: /etc/ssl/certs/dhparam.pem
+
+ssl_cert_path: "/etc/ssl/certs/{{ project_name }}.crt-bundle"
+ssl_key_path: "/etc/ssl/certs/{{ project_name }}.key"
+
+nginx_shared_confs:
+  - {file: ssl_params, directory: "{{ nginx_dir }}", filename: ssl_params}
+  - {file: gzip_params, directory: "{{ nginx_dir }}", filename: gzip_params}
+
+nginx_site_confs:
+  - {
+      file: "site.conf",
+      directory: "{{ nginx_confd_dir }}",
+      filename: "{{ fqdn }}.conf"
+  }
+
+#
 # apt
 #
 
 apt_cache_valid_time: 3600
+
+#
+# vagrant
+#
+
+# overridden by django for vagrant specific settings
+is_vagrant: no

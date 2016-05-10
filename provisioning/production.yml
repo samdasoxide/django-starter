@@ -11,4 +11,5 @@
     - {role: geerlingguy.redis, become: yes}
     - {role: nodejs}
     - {role: uwsgi}
+    - {role: nginx}
     - {role: django}

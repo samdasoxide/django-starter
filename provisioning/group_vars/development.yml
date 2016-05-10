@@ -6,7 +6,6 @@
 #
 
 env: development
-hostname: "{{ project_name }}-development"
 fqdn: "{{ project_name }}.local"
 
 base_dir: "/home/vagrant/{{ project_name }}"

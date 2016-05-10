@@ -1,0 +1,98 @@
+# Generate nginx config files (and ssl configuration, if ssl was specified),
+# rolling back changes if any part of the config is invalid.
+
+- name: check if nginx is installed
+  stat: path=/usr/sbin/nginx
+  register: nginx_bin
+  changed_when: no
+
+- name: install nginx (if not present)
+  include: install.yml
+  when: not nginx_bin.stat.exists
+
+- name: configure nginx.conf
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+  become: yes
+  notify: restart nginx
+
+- include: ssl.yml
+  when: ssl
+
+- name: ensure nginx log directory exists
+  file:
+    path: "{{ nginx_log_dir }}"
+    state: directory
+  become: yes
+
+- name: ensure application nginx log directory exists
+  file:
+    path: "{{ nginx_app_log_dir }}"
+    state: directory
+  become: yes
+
+- name: ensure nginx is unmasked
+  shell: systemctl unmask nginx.service
+  become: yes
+
+- name: ensure nginx is enabled
+  service: name=nginx state=started enabled=yes
+  become: yes
+
+- name: ensure nginx config files exist
+  shell: "touch {{ item.directory }}/{{ item.filename }}"
+  args:
+    creates: "{{ item.directory }}/{{ item.filename }}"
+  with_flattened:
+    - "{{ nginx_shared_confs }}"
+    - "{{ nginx_site_confs }}"
+  become: yes
+
+- name: backup existing nginx config files
+  shell: cp {{ item.filename }} {{ item.filename }}.backup
+  args:
+    chdir: "{{ item.directory }}"
+  with_flattened:
+    - "{{ nginx_shared_confs }}"
+    - "{{ nginx_site_confs }}"
+  become: yes
+
+- name: generate new nginx config files
+  template: src={{ item.file }} dest={{ item.directory }}/{{ item.filename }}
+  register: nginx_conf
+  with_flattened:
+    - "{{ nginx_shared_confs }}"
+    - "{{ nginx_site_confs }}"
+  become: yes
+
+- name: ensure nginx config is valid
+  shell: nginx -t
+  ignore_errors: yes
+  register: nginx_test_valid
+  changed_when: false
+  when: nginx_conf | changed
+  become: yes
+
+- name: remove temporary backups if new nginx config files are valid
+  file:
+    path: "{{ item.directory }}/{{ item.filename }}.backup"
+    state: absent
+  with_flattened:
+    - "{{ nginx_shared_confs }}"
+    - "{{ nginx_site_confs }}"
+  when: nginx_test_valid | success
+  become: yes
+  notify: restart nginx
+
+- name: restore temporary backups if new nginx config files are invalid
+  shell: "mv {{ item.filename }}.backup {{ item.filename }}"
+  args:
+    chdir: "{{ item.directory }}"
+  with_flattened:
+    - "{{ nginx_shared_confs }}"
+    - "{{ nginx_site_confs }}"
+  when: nginx_test_valid | failed
+  become: yes
+
+- fail:
+    msg: "nginx config is invalid: {{ nginx_test_valid.stderr }}"
+  when: nginx_test_valid | failed

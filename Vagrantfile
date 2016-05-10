@@ -36,28 +36,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             ansible.extra_vars = {
                 ansible_ssh_user: 'vagrant',
                 ansible_connection: 'ssh',
-                ansible_ssh_args: '-o ForwardAgent=yes'
-            }
-        end
-    end
-
-    # Production machine
-    config.vm.define "production" do |production|
-        production.vm.network "forwarded_port", guest: 80, host: 8080
-
-        # Provision with vagrant.yml
-        production.vm.provision "ansible" do |ansible|
-            ansible.playbook = "provisioning/production.yml"
-            ansible.groups = {
-                "production" => ["production"],
-            }
-            ansible.host_key_checking = false
-            ansible.vault_password_file = ".vault_pass.txt"
-
-            ansible.extra_vars = {
-                ansible_ssh_user: 'vagrant',
-                ansible_connection: 'ssh',
-                ansible_ssh_args: '-o ForwardAgent=yes'
+                ansible_ssh_args: '-o ForwardAgent=yes',
+                is_vagrant: 'yes'
             }
         end
     end
@@ -78,7 +58,30 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             ansible.extra_vars = {
                 ansible_ssh_user: 'vagrant',
                 ansible_connection: 'ssh',
-                ansible_ssh_args: '-o ForwardAgent=yes'
+                ansible_ssh_args: '-o ForwardAgent=yes',
+                is_vagrant: 'yes'
+            }
+        end
+    end
+
+    # Production machine
+    config.vm.define "production" do |production|
+        production.vm.network "forwarded_port", guest: 80, host: 8080
+
+        # Provision with vagrant.yml
+        production.vm.provision "ansible" do |ansible|
+            ansible.playbook = "provisioning/production.yml"
+            ansible.groups = {
+                "production" => ["production"],
+            }
+            ansible.host_key_checking = false
+            ansible.vault_password_file = ".vault_pass.txt"
+
+            ansible.extra_vars = {
+                ansible_ssh_user: 'vagrant',
+                ansible_connection: 'ssh',
+                ansible_ssh_args: '-o ForwardAgent=yes',
+                is_vagrant: 'yes'
             }
         end
     end
