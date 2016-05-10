@@ -21,10 +21,6 @@ sftp_users: []
 # public_keys:
 #   foo_user: public_key_here
 
-# apt
-
-apt_cache_valid_time: 3600
-
 #
 # postgresql
 #
@@ -72,15 +68,19 @@ redis_appendonly: "yes" # durability for using redis as queue
 django_settings_module: "{{ project_name }}.settings.{{ env }}"
 django_log_dir: "/var/log/django/{{ project_name }}"
 
+# these environmental variables are made available to the deployment user
+# to allow for easy production env configuration
 env_vars:
-  # general
+  # django:general
   cfg_app_name: "{{ project_name }}"
   cfg_server_name: "{{ fqdn }}"
   cfg_environment_type: "production"
   cfg_secret_key: "{{ django_secret_key }}"
   cfg_wsgi_module: "{{ project_name }}.wsgi"
 
-  # db
+  django_settings_module: "{{ django_settings_module }}"
+
+  # django:db
   cfg_db_type: "postgres"
   cfg_db_engine: "django.db.backends.postgresql_psycopg2"
   cfg_db_host: "/var/run/postgresql/"
@@ -88,33 +88,44 @@ env_vars:
   cfg_db_user: "{{ deployment_database.username }}"
   cfg_db_password: "{{ deployment_database.pass }}"
 
-  # email
+  # django:email
   cfg_email_prefix: "[{{ project_name }}] "
   cfg_email_sender: "{{ project_name }}@{{ fqdn }}"
   cfg_email_subject_prefix: "[{{ project_name }}] "
   cfg_server_email: "{{ project_name }}@{{ fqdn }}"
 
+  # django:logging
   cfg_log_dir: "{{ django_log_dir }}"
   cfg_log_file: "{{ django_log_dir }}/error.log"
   cfg_uwsgi_log_file: "{{ django_log_dir }}/uwsgi.log"
 
-  # static / media
+  # django:static/media
   cfg_media_url: "/media/"
   cfg_media_dir: "{{ base_dir }}/media"
 
   cfg_static_url: "/static/"
   cfg_static_dir: "{{ base_dir }}/static"
 
-  # cache
+  # django:cache
   cfg_redis_url: "redis://localhost:6379/0"
   cfg_cache_backend: "django_redis.cache.RedisCache"
 
-  django_settings_module: "{{ django_settings_module }}"
+  # general
   home: "/home/{{ deployment_user }}"
   path: "{{ virtualenv_path }}/bin:/bin/:/usr/bin/:$PATH"
+  tmpdir: "{{ base_dir }}/tmp"
+
+  # postgres
   pgdatabase: "{{ deployment_database.name }}"
   pghost: "/var/run/postgresql/"
   pguser: "{{ deployment_database.username }}"
+
+  # python
   pythondontwritebytecode: "1"
   pythonpath: "{{ django_dir }}"
-  tmpdir: "{{ base_dir }}/tmp"
+
+#
+# apt
+#
+
+apt_cache_valid_time: 3600

@@ -7,14 +7,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Debian 8 box
     config.vm.box = "debian/jessie64"
+    config.vm.synced_folder ".", "/vagrant", disabled: true
 
     # Modify virtualbox opts
     config.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", "1024"]
     end
-
-    # Sync project folder
-    config.vm.synced_folder ".", "/home/vagrant/project"
 
     # Forward ssh agent to share host credentials with the guest VM.
     config.ssh.forward_agent = true
@@ -22,6 +20,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Development machine
     config.vm.define "development" do |development|
         development.vm.network "forwarded_port", guest: 8000, host: 8000
+
+        # Sync project folder
+        development.vm.synced_folder ".", "/home/vagrant/project"
 
         # Provision with vagrant.yml
         development.vm.provision "ansible" do |ansible|
