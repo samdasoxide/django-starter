@@ -1,0 +1,46 @@
+# Handles the installation and configuration of uwsgi and uwsgi emperor.
+---
+
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  with_items:
+    - uwsgi
+    - uwsgi-emperor
+    - uwsgi-plugin-python
+  become: true
+
+- name: install uwsgitop
+  pip: name=uwsgitop state=latest
+  become: true
+
+- name: configure uwsgi-emperor
+  template: src=emperor.ini dest=/etc/uwsgi-emperor/emperor.ini
+  become: true
+
+- name: ensure log file exists
+  file:
+    path: "{{ uwsgi_log_file }}"
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+    state: touch
+  become: true
+
+- name: install uwsgi vassal
+  template:
+    src: site.ini
+    dest: "/etc/uwsgi-emperor/vassals/{{ project_name }}"
+  become: true
+
+- name: create symlink to vassal
+  file:
+    src: "/etc/uwsgi-emperor/vassals/{{ project_name }}"
+    dest: "/etc/uwsgi-emperor/vassals/{{ project_name }}.ini"
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+    mode: 777
+    state: link
+  become: true
+  notify: restart uwsgi-emperor

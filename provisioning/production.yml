@@ -10,4 +10,5 @@
     - {role: ANXS.postgresql, become: yes}
     - {role: geerlingguy.redis, become: yes}
     - {role: nodejs}
+    - {role: uwsgi}
     - {role: django}

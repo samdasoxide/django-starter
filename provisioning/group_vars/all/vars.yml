@@ -67,6 +67,7 @@ redis_appendonly: "yes" # durability for using redis as queue
 
 django_settings_module: "{{ project_name }}.settings.{{ env }}"
 django_log_dir: "/var/log/django/{{ project_name }}"
+uwsgi_log_file: "{{ django_log_dir }}/uwsgi.log"
 
 # these environmental variables are made available to the deployment user
 # to allow for easy production env configuration
@@ -97,7 +98,7 @@ env_vars:
   # django:logging
   cfg_log_dir: "{{ django_log_dir }}"
   cfg_log_file: "{{ django_log_dir }}/error.log"
-  cfg_uwsgi_log_file: "{{ django_log_dir }}/uwsgi.log"
+  cfg_uwsgi_log_file: "{{ uwsgi_log_file }}"
 
   # django:static/media
   cfg_media_url: "/media/"
