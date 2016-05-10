@@ -1,6 +1,7 @@
 # Defines variables for production hosts
 ---
 
+#
 # general
 
 env: production
@@ -8,11 +9,17 @@ env: production
 hostname: "{{ project_name }}-production"
 fqdn: example.com
 
+#
+# django
+#
+
 django_projects_dir: /usr/local/django
 base_dir: "{{ django_projects_dir }}/{{ fqdn }}"
 django_dir: "{{ base_dir }}/{{ project_name }}"
 
+#
 # users
+#
 
 deployment_user: "{{ project_name }}"
 
@@ -21,7 +28,9 @@ users:
     state: present
     groups: deployment
 
+#
 # virtualenv
+#
 
 virtualenv_root: /home/vagrant/.virtualenvs
 virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"

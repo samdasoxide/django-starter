@@ -42,7 +42,7 @@
     line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
   become: true
 
-- name: pull ishamba from repository
+- name: pull project from repository
   git:
     repo: "{{ git_uri }}"
     dest: "{{ base_dir }}"

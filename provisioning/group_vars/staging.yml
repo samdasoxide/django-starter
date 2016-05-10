@@ -1,6 +1,10 @@
 # Defines variables for staging hosts
 ---
 
+#
+# general
+#
+
 env: staging
 
 hostname: "{{ project_name }}-staging"

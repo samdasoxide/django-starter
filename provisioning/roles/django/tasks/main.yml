@@ -28,6 +28,8 @@
   pip:
     requirements: "{{ base_dir }}/requirements/{{ env }}.txt"
     virtualenv: "{{ virtualenv_path }}"
+  become: true
+  become_user: "{{ deployment_user }}"
 
 - name: django migrate
   django_manage:
@@ -35,6 +37,8 @@
     settings: "{{ django_settings_module }}"
     virtualenv: "{{ virtualenv_path }}"
     app_path: "{{ django_dir }}"
+  become: true
+  become_user: "{{ deployment_user }}"
 
 - name: django collectstatic
   django_manage:
@@ -42,3 +46,5 @@
     settings: "{{ django_settings_module }}"
     virtualenv: "{{ virtualenv_path }}"
     app_path: "{{ django_dir }}"
+  become: true
+  become_user: "{{ deployment_user }}"

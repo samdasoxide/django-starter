@@ -1,7 +1,9 @@
 # Defines variables for development hosts
 ---
 
+#
 # general
+#
 
 env: development
 hostname: "{{ project_name }}-development"
@@ -10,7 +12,16 @@ fqdn: "{{ project_name }}.local"
 base_dir: "/home/vagrant/{{ project_name }}"
 django_dir: "{{ base_dir }}/{{ project_name }}"
 
+
+#
+# users
+#
+
+deployment_user: vagrant
+
+#
 # virtualenv
+#
 
 virtualenv_root: /home/vagrant/.virtualenvs
 virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"

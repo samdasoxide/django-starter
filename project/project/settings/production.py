@@ -48,7 +48,7 @@ LOGGING['handlers']['logfile'] = {
     'filename': os.getenv('CFG_LOG_FILE'),
     'maxBytes': 50000,
     'backupCount': 2,
-    'formatter': 'standard',
+    'formatter': 'verbose',
 }
 
 # add logfile handler to the root logger
