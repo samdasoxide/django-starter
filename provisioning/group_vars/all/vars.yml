@@ -104,10 +104,10 @@ env_vars:
 
   # django:static/media
   cfg_media_url: "/media/"
-  cfg_media_dir: "{{ base_dir }}/media"
+  cfg_media_dir: "{{ base_dir }}/public/media"
 
   cfg_static_url: "/static/"
-  cfg_static_dir: "{{ base_dir }}/static"
+  cfg_static_dir: "{{ base_dir }}/public/static"
 
   # django:cache
   cfg_redis_url: "redis://localhost:6379/0"

@@ -27,7 +27,7 @@ dj() {
 
 restart() {
     /bin/sh -c '
-tail -f -n0 /var/log/uwsgi/{{ project_name }}.log & tailpid=$!
+tail -f -n0 {{ uwsgi_log_file }} & tailpid=$!
 touch -h /etc/uwsgi-emperor/vassals/{{ project_name }}.ini
 sleep 7
 kill $tailpid; wait
