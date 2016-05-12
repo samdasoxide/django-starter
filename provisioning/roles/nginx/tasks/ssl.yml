@@ -1,24 +1,9 @@
 # Generate strong dhe param and ensure SSL certificates are present
 ---
 
-# TODO: Implement SSL certificate private key storage in ansible-vault
-
 - name: generate strong dhe parameter
   shell: openssl dhparam -dsaparam -out {{ dhe_param_path }} 4096
   args:
     creates: "{{ dhe_param_path }}"
   notify: restart nginx
   become: yes
-
-- name: ensure ssl cert/key exist
-  stat: path={{item}}
-  register: ssl_files
-  with_items:
-    - "{{ ssl_cert_path }}"
-    - "{{ ssl_key_path }}"
-
-- fail: msg="ssl cert file {{ ssl_cert_path }} missing"
-  when: not ssl_files.results[0].stat.exists
-
-- fail: msg="ssl key file {{ ssl_key_path }} missing"
-  when: not ssl_files.results[1].stat.exists

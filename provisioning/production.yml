@@ -12,6 +12,7 @@
     - {role: postfix}
     - {role: nodejs}
     - {role: uwsgi}
+    - {role: thefinn93.letsencrypt, become: yes, when: ssl}
     - {role: nginx}
     - {role: django}
     - {role: backups, when: not is_vagrant}

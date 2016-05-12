@@ -1,5 +1,6 @@
 # Generate nginx config files (and ssl configuration, if ssl was specified),
 # rolling back changes if any part of the config is invalid.
+---
 
 - name: install nginx
   include: install.yml
