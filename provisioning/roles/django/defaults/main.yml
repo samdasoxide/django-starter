@@ -1,0 +1,17 @@
+---
+django_apt_dependencies:
+    # requests[security]
+    - python-cffi
+    - libffi-dev
+    - libssl-dev
+
+    # geo django
+
+    - libgeos-dev
+
+    # wagtail
+    - libjpeg-dev
+    - libtiff-dev
+    - zlib1g-dev
+    - libfreetype6-dev
+    - liblcms2-dev

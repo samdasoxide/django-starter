@@ -10,22 +10,7 @@
     state: latest
     update_cache: yes
     cache_valid_time: "{{ apt_cache_valid_time }}"
-  with_items:
-    # requests[security]
-    - python-cffi
-    - libffi-dev
-    - libssl-dev
-
-    # geo django
-
-    - libgeos-dev
-
-    # wagtail
-    - libjpeg-dev
-    - libtiff-dev
-    - zlib1g-dev
-    - libfreetype6-dev
-    - liblcms2-dev
+  with_items: "{{ django_apt_dependencies }}"
   become: yes
 
 - name: install requirements
