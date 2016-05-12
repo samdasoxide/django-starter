@@ -1,0 +1,18 @@
+---
+
+postfix_domain: '{{ fqdn }}'
+postfix_notify_email: 'admin@{{ postfix_domain }}'
+postfix_relayhost: ''
+postfix_use_smtp: false
+postfix_relayhost_user: false
+postfix_relayhost_pass: false
+
+postfix_config_dir: '/etc/postfix'
+postfix_service: 'postfix'
+postfix_packages:
+  - 'ca-certificates'
+  - 'heirloom-mailx'
+  - 'libsasl2-2'
+  - 'libsasl2-modules'
+  - 'mailutils'
+  - 'postfix'
