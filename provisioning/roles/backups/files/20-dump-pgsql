@@ -1,0 +1,52 @@
+#! /bin/sh
+
+# This script creates diff-based Postgres dumps.  On Sunday, a full dump
+# of each database is made.  On other days, a full dump is made, diffed
+# against the last (uncompressed) dump, and only the diff is stored.
+#
+
+LANG=C
+HOME=/root
+export LANG HOME
+
+DIR="/var/backups/pgsql"
+OPTS="-Fp -bcOx --if-exists"
+skip='^template0$'
+
+psql -c 'SELECT 1' template1 >/dev/null 2>&1 || exit 0
+
+set -e
+
+for db in $(psql -Atc 'SELECT datname FROM pg_database' template1 | egrep -v -- "${skip}" ); do
+	DDIR="${DIR}/${db}"
+	mkdir -p "${DDIR}"
+	cd "${DDIR}"
+
+	echo "==> ${db}"
+
+	# Only keep the 2 most recent full backups, and the 33 most
+	# recent diffs.
+	( ls -1rt *.sql.gz | head -n -2 | xargs rm ) >/dev/null 2>&1 || true
+	( ls -1rt *.sql.diff.gz | head -n -33 | xargs rm ) >/dev/null 2>&1 || true
+
+	lastfull=$(ls -1tr | grep "${db}\.full\.....-..-..\.sql\.gz" | tail -1)
+
+	if [ -z "${lastfull}" -o $(date +%a) = Sun ]; then
+		fname="$(date +"${db}.full.%Y-%m-%d.sql.gz")"
+		pg_dump  ${OPTS} "${db}" | gzip > ".${fname}"
+		mv ".${fname}" "${fname}"
+	else
+		fname="$(date +"${db}.incr.%Y-%m-%d.sql")"
+		pg_dump ${OPTS} "${db}" > "${fname}"
+
+		# xdelta returns 0 if no differences were found,
+		# 1 if some differences were found, and 2 on error.
+		set +e
+		xdelta delta -m32m "${lastfull}" "${fname}" "${fname}.xdelta"
+		if [ $? -ge 2 ]; then
+			exit 1
+		fi
+		set -e
+		rm -f "${fname}"
+	fi
+done

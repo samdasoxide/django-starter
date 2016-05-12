@@ -1,0 +1,7 @@
+# vim: set ft=conf :
+
+[default]
+access_key = {{ s3cmd_aws_access_key }}
+secret_key = {{ s3cmd_aws_secret_key }}
+use_https = yes
+encoding = UTF-8

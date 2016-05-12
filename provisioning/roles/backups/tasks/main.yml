@@ -1,0 +1,37 @@
+# Handles the installation and configuration of backups using backup2l,
+# Amazon S3, s3cmd, and a custom differential database script.
+---
+
+- name: ensure system packages are installed
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_valid_time }}"
+  with_items:
+    - backup2l
+    - xdelta
+    - s3cmd
+  become: yes
+
+- name: insure pgsql backup directory exists
+  file: path=/var/backups/pgsql state=directory
+  become: yes
+
+- name: insure backup2l backup directory exists
+  file: path=/var/backups/backup2l state=directory
+  become: yes
+
+- name: configure backup2l
+  template: src=backup2l.conf dest=/etc/backup2l.conf
+  become: yes
+
+- name: install database dump cron job
+  copy: src=20-dump-pgsql dest=/etc/cron.daily/ owner=root group=root mode=755
+  become: yes
+
+- name: configure s3cmd
+  template:
+    src: s3cfg
+    dest: /root/.s3cfg
+  become: true

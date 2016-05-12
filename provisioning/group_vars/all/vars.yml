@@ -164,3 +164,15 @@ apt_cache_valid_time: 3600
 
 # overridden by django for vagrant specific settings
 is_vagrant: no
+
+#
+# backups
+#
+
+s3cmd_aws_bucket: ""
+backup_directories:
+  - /etc
+  - /root
+  - /home
+  - /usr/local
+  - /var/backups/pgsql
