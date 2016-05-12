@@ -21,6 +21,12 @@
   template: src=emperor.ini dest=/etc/uwsgi-emperor/emperor.ini
   become: true
 
+- name: uwsgi log directory exists
+  file:
+    path: "{{ uwsgi_log_dir }}"
+    state: directory
+  become: true
+
 - name: ensure log file exists
   file:
     path: "{{ uwsgi_log_file }}"

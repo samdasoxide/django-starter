@@ -2,15 +2,15 @@
 ---
 
 - name: ensure django log directory exists
-  file: path=/var/log/django/ state=directory
+  file: path={{ django_log_dir }} state=directory
   become: true
 
-- name: ensure application log directory exists
+- name: ensure application log exists
   file:
-    path: "/var/log/django/{{ project_name }}"
+    path: "{{ django_log_file }}"
     owner: "{{ deployment_user }}"
     group: "{{ deployment_user }}"
-    state: directory
+    state: touch
   become: true
 
 - name: ensure django projects dir exists
@@ -29,17 +29,25 @@
 
 - name: ensure virtualenvs directory exists
   file:
-    path: "{{ django_projects_dir }}/virtualenvs"
+    path: "{{ virtualenv_root }}"
     state: directory
   become: true
 
-- name: ensure github.com is a known host
+- name: ensure project virtualenv directory exists
+  file:
+    path: "{{ virtualenv_path }}"
+    state: directory
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+  become: true
+
+- name: ensure git host is a known host
   lineinfile:
     dest: /etc/ssh/ssh_known_hosts
     state: present
     create: yes
     regexp: "^github\\.com"
-    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa {{ git_host }}') }}"
   become: true
 
 - name: pull project from repository

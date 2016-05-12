@@ -1,3 +1,4 @@
+# default variables for nginx role
 ---
 
 nginx_log_dir: /var/log/nginx
@@ -7,6 +8,5 @@ nginx_error_log: "{{ nginx_log_dir }}/error.log"
 nginx_access_log: "{{ nginx_log_dir }}/access.log"
 
 # site specific log files
-nginx_app_log_dir: "{{ nginx_log_dir }}/app/"
-nginx_app_error_log: "{{ nginx_app_log_dir }}/error.log"
-nginx_app_access_log: "{{ nginx_app_log_dir }}/access.log"
+nginx_app_error_log: "{{ nginx_app_log_dir }}/app_error.log"
+nginx_app_access_log: "{{ nginx_app_log_dir }}/app_access.log"

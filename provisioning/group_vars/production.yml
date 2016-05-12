@@ -31,5 +31,5 @@ users:
 # virtualenv
 #
 
-virtualenv_root: /home/vagrant/.virtualenvs
+virtualenv_root: "{{ django_projects_dir }}/virtualenvs"
 virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"

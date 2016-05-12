@@ -7,7 +7,8 @@
 
 project_name: project
 
-git_uri: git@github.com:RocketPod/django-starter.git
+git_host: github.com
+git_uri: "git@{{ git_host }}:RocketPod/django-starter.git"
 git_version: master
 
 #
@@ -66,9 +67,12 @@ redis_appendonly: "yes" # durability for using redis as queue
 #
 
 django_settings_module: "{{ project_name }}.settings.{{ env }}"
-django_log_dir: "/var/log/django/{{ project_name }}"
 
-uwsgi_log_file: "{{ django_log_dir }}/uwsgi.log"
+django_log_dir: /var/log/django
+django_log_file: "{{ django_log_dir }}/{{ project_name }}.log"
+
+uwsgi_log_dir: /var/log/uwsgi
+uwsgi_log_file: "{{ uwsgi_log_dir }}/{{ project_name }}.log"
 uwsgi_socket_path: "/home/{{ deployment_user }}/{{ project_name }}.sock"
 
 # these environmental variables are made available to the deployment user
@@ -99,7 +103,7 @@ env_vars:
 
   # django:logging
   cfg_log_dir: "{{ django_log_dir }}"
-  cfg_log_file: "{{ django_log_dir }}/error.log"
+  cfg_log_file: "{{ django_log_file }}"
   cfg_uwsgi_log_file: "{{ uwsgi_log_file }}"
 
   # django:static/media
@@ -133,7 +137,8 @@ env_vars:
 
 nginx_dir: /etc/nginx
 nginx_confd_dir: "{{nginx_dir}}/conf.d"
-nginx_app_log_dir: "/var/log/nginx/{{ project_name }}"
+nginx_app_error_log: "/var/log/nginx/{{ project_name }}_error.log"
+nginx_app_access_log: "/var/log/nginx/{{ project_name }}_access.log"
 
 ssl: no
 dhe_param_path: /etc/ssl/certs/dhparam.pem

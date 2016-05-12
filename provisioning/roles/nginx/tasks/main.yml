@@ -18,12 +18,6 @@
     state: directory
   become: yes
 
-- name: ensure application nginx log directory exists
-  file:
-    path: "{{ nginx_app_log_dir }}"
-    state: directory
-  become: yes
-
 - name: ensure nginx is unmasked
   shell: systemctl unmask nginx.service
   become: yes
