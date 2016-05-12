@@ -20,5 +20,9 @@
   become: yes
 
 - name: install nginx package
-  apt: name=nginx state=latest update_cache=yes
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_valid_time }}"
   become: yes

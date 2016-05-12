@@ -1,3 +1,5 @@
+# vim:set sw=4 ts=4 et ft=nginx :
+
 ## Use a shared session cache for all workers.
 ## A 10mb cache will support ~40,000 SSL sessions
 ssl_session_cache shared:SSL:10m;

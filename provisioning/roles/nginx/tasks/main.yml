@@ -1,14 +1,8 @@
 # Generate nginx config files (and ssl configuration, if ssl was specified),
 # rolling back changes if any part of the config is invalid.
 
-- name: check if nginx is installed
-  stat: path=/usr/sbin/nginx
-  register: nginx_bin
-  changed_when: no
-
-- name: install nginx (if not present)
+- name: install nginx
   include: install.yml
-  when: not nginx_bin.stat.exists
 
 - name: configure nginx.conf
   template: src=nginx.conf dest=/etc/nginx/nginx.conf
