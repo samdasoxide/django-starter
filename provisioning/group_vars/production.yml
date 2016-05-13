@@ -42,11 +42,11 @@ letsencrypt_cert_domains:
   - "{{ fqdn }}"
 # - "www.{{ fqdn }}"
 
-  letsencrypt_webroot_path: /var/www/letsencrypt/
-  letsencrypt_authenticator: webroot
-  letsencrypt_email: "webmaster@{{ fqdn }}"
-  letsencrypt_renewal_frequency:
-    day: "*"
-    hour: 0
-    minute: 0
-  letsencrypt_renewal_command_args: 'systemctl restart nginx'
+letsencrypt_webroot_path: /var/www/letsencrypt/
+letsencrypt_authenticator: webroot
+letsencrypt_email: "webmaster@{{ fqdn }}"
+letsencrypt_renewal_frequency:
+  day: "*"
+  hour: 0
+  minute: 0
+letsencrypt_renewal_command_args: 'systemctl restart nginx'
