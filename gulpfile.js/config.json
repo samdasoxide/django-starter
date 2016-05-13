@@ -1,7 +1,7 @@
 {
   "root": {
-    "src": "./src",
-    "dest": "./public/static"
+    "src": "./static_src",
+    "dest": "./tmp/static"
   },
 
   "tasks": {

@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from django.views.generic import TemplateView
 
@@ -27,4 +26,9 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += staticfiles_urlpatterns()
+    # serve static files in development
+    from django.conf.urls.static import static
+
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT,
+                          show_indexes=True)
