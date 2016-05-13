@@ -36,3 +36,8 @@
 - name: install nodejs
   apt: name=nodejs state=latest update_cache=yes
   become: yes
+
+- name: install frontend asset pipeline
+  npm: path={{ base_dir }}
+  become: yes
+  become_user: "{{ deployment_user }}"
