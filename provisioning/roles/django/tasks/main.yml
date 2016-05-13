@@ -29,6 +29,18 @@
   become: true
   become_user: "{{ deployment_user }}"
 
+- name: install frontend asset pipeline
+  npm: path={{ base_dir }}
+  become: yes
+  become_user: "{{ deployment_user }}"
+
+- name: npm run production
+  shell: npm run production
+  args:
+    chdir: "{{ base_dir }}"
+  become: true
+  become_user: "{{ deployment_user }}"
+
 - name: django collectstatic
   django_manage:
     command: collectstatic
