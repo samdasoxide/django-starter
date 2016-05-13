@@ -15,6 +15,6 @@ if tty -s; then
 fi
 
 V="$VIRTUAL_ENV"
-D="/usr/local/django/{{ fqdn }}"
+D="{{ base_dir }}"
 
 cd "$D"

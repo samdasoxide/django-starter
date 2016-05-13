@@ -15,6 +15,7 @@ git_version: master
 # users
 #
 
+users: []
 # sftp only users (jailed to SFTP in the users $HOME/files directory)
 sftp_users: []
 

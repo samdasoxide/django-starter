@@ -5,6 +5,7 @@
   become_method: sudo
   roles:
     - {role: base}
+    - {role: users}
     - {role: ANXS.postgresql, become: yes}
     - {role: geerlingguy.redis, become: yes}
     - {role: nodejs}
