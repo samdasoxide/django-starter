@@ -41,15 +41,6 @@
     group: "{{ deployment_user }}"
   become: true
 
-- name: ensure git host is a known host
-  lineinfile:
-    dest: /etc/ssh/ssh_known_hosts
-    state: present
-    create: yes
-    regexp: "^github\\.com"
-    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa {{ git_host }}') }}"
-  become: true
-
 - name: pull project from repository
   git:
     repo: "{{ git_uri }}"
