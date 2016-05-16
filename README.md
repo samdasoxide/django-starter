@@ -10,59 +10,69 @@
     $ sudo apt-get update
     $ sudo apt-get install ansible
     ```
+ 2. Install the required 3rd party Ansible playbooks
 
- 2. Ensure you have vagrant installed
+    ```bash
+    $ sudo ansible-galaxy install -r provisioning/requirements.yml
+    ```
+
+ 3. Ensure you have vagrant installed
 
     ```bash
     $ wget https://releases.hashicorp.com/vagrant/1.8.1/vagrant_1.8.1_x86_64.deb
     $ sudo dpkg -i vagrant_1.8.1_x86_64.deb
     ```
 
- 3. Ensure you have `vagrant-vbguest` installed.
+ 4. Ensure you have `vagrant-vbguest` installed.
 
     ```bash
     $ vagrant plugin install vagrant-vbguest
     ```
 
- 5. Ensure you have nodejs installed (also installs `npm`)
+ 5. Ensure you have nodejs 5.x installed (also installs `npm`)
 
     ```bash
-    $ curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+    $ curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
     $ sudo apt-get install -y nodejs
     ```
 
     If you have trouble here you likely have a legacy version of nodejs
-    installed this is solved by executing:
+    installed this is solved by executing before the above:
 
     ```bash
     $ sudo apt-get remove --purge nodejs npm
     ```
 
- 4. Ensure you have the scss-lint ruby gem installed
+ 6. Install the front end asset processing pipeline
 
     ```bash
-    $ sudo gem install scss-lint
-    ```
-
- 6. Install the front end asset processing pipeline (including `gulp`) then
-    process and install frontend dependencies
-
-    ```bash
-    $ sudo npm install -g gulp
     $ npm install
-    $ gulp
     ```
- 7. Install the required 3rd party playbooks
+
+ 7. Ensure that your ssh key  is registered with ssh-agent
 
     ```bash
-    $ sudo ansible-galaxy install -r provisioning/requirements.yml
+    $ ssh-add -L
+    ```
+
+    If your key is not listed:
+
+    ```bash
+    $ ssh-add
     ```
 
  8. Bring the vagrant box up and start the development server
 
     ```bash
-    $ vagrant up
-    $ vagrant ssh
-    $ cd project/project
+    $ vagrant up development
+    $ vagrant ssh development
+    $ cd project/
     $ ./manage.py runserver 0.0.0.0:8000
+    ```
+ 9. Start the frontend asset processing pipeline. This will automatically open
+    a browser window with [Browsersync](https://www.browsersync.io/) which
+    automatically refreshes when changes are made to templates or static assets.
+
+    ```bash
+    $ npm start
     ```
