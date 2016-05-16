@@ -18,6 +18,12 @@ based on the deployment environment:
  - `provisioning/group_vars/staging.yml`
  - `provisioning/group_vars/production.yml`
 
+### Inventory
+
+The [inventory](http://docs.ansible.com/ansible/intro_inventory.html) of all
+hosts managed by Ansible (`provisioning/hosts.ini`) should be updated to
+include your staging and production hosts.
+
 ## Secrets
 
 Secrets such as authentication tokens, private keys, database passwords etc.
@@ -131,7 +137,7 @@ configured.
 
 #### `provisioning/roles/uwsgi`
 
-Installs and configures 
+Installs and configures
 [uWSGI](http://uwsgi-docs.readthedocs.io/en/latest/) and
 [uWSGI Emperor](http://uwsgi-docs.readthedocs.io/en/latest/Emperor.html).
 
@@ -174,3 +180,13 @@ Used to install the ~~letsencrypt~~
 generate SSL certificates for the required domains.
 
 Also creates a cronjob for the renewal of certificates.
+
+## Provisioning live hosts
+
+Live hosts (e.g. your live `staging` and `production` environments as opposed
+to the equivalent vagrant environments) can be provisioned by executing the
+following:
+
+```bash
+$ ansible-playbook -i provisioning/hosts.ini provisioning/{production,staging}.yml --vault-password-file .vault_pass.txt
+```

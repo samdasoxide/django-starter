@@ -24,9 +24,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # Sync project folder
         development.vm.synced_folder ".", "/home/vagrant/project"
 
-        # Provision with vagrant.yml
         development.vm.provision "ansible" do |ansible|
-            ansible.playbook = "provisioning/vagrant.yml"
+            ansible.playbook = "provisioning/development.yml"
             ansible.groups = {
                 "development" => ["development"],
             }
@@ -46,9 +45,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "staging" do |staging|
         staging.vm.network "forwarded_port", guest: 80, host: 9000
 
-        # Provision with vagrant.yml
         staging.vm.provision "ansible" do |ansible|
-            ansible.playbook = "provisioning/staging.yml"
+            ansible.playbook = "provisioning/production.yml"
             ansible.groups = {
                 "staging" => ["staging"],
             }
@@ -68,7 +66,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "production" do |production|
         production.vm.network "forwarded_port", guest: 80, host: 8080
 
-        # Provision with vagrant.yml
         production.vm.provision "ansible" do |ansible|
             ansible.playbook = "provisioning/production.yml"
             ansible.groups = {
