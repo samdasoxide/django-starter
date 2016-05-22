@@ -31,7 +31,7 @@
   file:
     path: "{{ uwsgi_log_file }}"
     owner: "{{ deployment_user }}"
-    group: "{{ deployment_user }}"
+    group: "root"
     state: touch
   become: true
 

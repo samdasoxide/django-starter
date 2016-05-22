@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         development.vm.network "forwarded_port", guest: 8000, host: 8000
 
         # Sync project folder
-        development.vm.synced_folder ".", "/home/vagrant/project"
+        development.vm.synced_folder ".", "/home/vagrant/{{ cookiecutter.project_slug }}"
 
         development.vm.provision "ansible" do |ansible|
             ansible.playbook = "provisioning/development.yml"

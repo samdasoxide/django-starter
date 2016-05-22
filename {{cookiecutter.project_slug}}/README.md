@@ -1,4 +1,4 @@
-# Project name
+# {{ cookiecutter.project_name }}
 
 ## Developer setup
 
@@ -66,7 +66,7 @@
     ```bash
     $ vagrant up development
     $ vagrant ssh development
-    $ cd project/
+    $ cd {{ cookiecutter.project_slug }}/
     $ ./manage.py runserver 0.0.0.0:8000
     ```
  9. Start the frontend asset processing pipeline. This will automatically open

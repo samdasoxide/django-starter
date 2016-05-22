@@ -1,15 +1,15 @@
 {
-  "name": "django-starter",
-  "version": "3.1.2",
-  "description": "An extremely opinionated django base project with ansible provisioning, vagrant box, and gulp based frontend asset pipeline.",
+  "name": "{{ cookiecutter.project_slug }}",
+  "version": "0.0.1",
+  "description": "{{ cookiecutter.description }}",
   "engines": {
     "node": ">=0.12.0 ~5.9.0",
     "npm": ">=2.14.12 ~3.7.3"
   },
-  "homepage": "http://github.com/rocketpod/django-starter",
+  "homepage": "{{ cookiecutter.domain_name }}",
   "repository": {
     "type": "git",
-    "url": "git://github.com/rocketpod/django-starter.git"
+    "url": "{{ cookiecutter.repo_url }}"
   },
   "scripts": {
     "start": "gulp",

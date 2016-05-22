@@ -7,4 +7,4 @@
 
 env: staging
 
-fqdn: staging.example.com
+fqdn: staging.{{ fqdn }}

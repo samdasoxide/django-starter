@@ -5,10 +5,7 @@
 # general
 #
 
-project_name: project
-
 git_host: github.com
-git_uri: "git@{{ git_host }}:RocketPod/django-starter.git"
 git_version: master
 
 #

@@ -1,0 +1,24 @@
+{
+    "project_name": "project_name",
+    "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_') }}",
+    "repo_url": "git://github.com/rocketpod/django-starter.git",
+    "description": "A short description of the project.",
+    "domain_name": "example.com",
+    "_copy_without_render": [
+        "*.html",
+        "*provisioning/group_vars/development.yml",
+        "*provisioning/group_vars/staging.yml",
+        "*provisioning/group_vars/production.yml",
+        "*provisioning/group_vars/all/vars.yml",
+        "*provisioning/group_vars/all/vault.yml",
+        "*provisioning/roles",
+        "*provisioning/development.yml",
+        "*provisioning/staging.yml",
+        "*provisioning/production.yml",
+        "*gulpfile.js/lib",
+        "*gulpfile.js/tasks",
+        "*static_src",
+        "*node_modules",
+        "*.pyc"
+    ]
+}

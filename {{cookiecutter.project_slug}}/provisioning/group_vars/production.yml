@@ -6,8 +6,6 @@
 
 env: production
 
-fqdn: example.com
-
 #
 # django
 #

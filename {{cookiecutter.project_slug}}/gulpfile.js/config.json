@@ -6,7 +6,7 @@
 
   "tasks": {
     "browserSync": {
-      "files": ["project/**/*.html", "public"],
+      "files": ["{{ cookiecutter.project_slug }}/**/*.html", "public"],
       "proxy": "localhost:8000"
     },
 
