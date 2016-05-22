@@ -5,6 +5,8 @@ Django starter is a **highly oppionated**
 new Django projects. It's what we use at [RocketPod](http://rocketpod.co.uk)
 and [Mediae](http://mediae.org) and may be useful to others.
 
+The project also includes [Wagtail](https://wagtail.io) support behind a flag.
+
 ## Technology stack
 
 More information on the technology stack can be found in
@@ -17,6 +19,8 @@ More information on the technology stack can be found in
  - uWSGI
  - redis
  - PostgreSQL
+ - elasticsearch (for wagtail)
+ - opbeat
  - etc.
 
 ## Usage

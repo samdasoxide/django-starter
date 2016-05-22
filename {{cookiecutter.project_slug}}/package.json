@@ -76,7 +76,7 @@
     "webpack-dev-middleware": "1.5.1",
     "webpack-hot-middleware": "2.10.0"
   },
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "dependencies": {
     "normalize.css": "^4.0.0"
   }

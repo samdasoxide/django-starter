@@ -115,6 +115,11 @@ env_vars:
   cfg_redis_url: "redis://localhost:6379/0"
   cfg_cache_backend: "django_redis.cache.RedisCache"
 
+  # opbeat
+  cfg_opbeat_organization_id: "{{ opbeat_organization_}}"
+  cfg_opbeat_app_id: "{{ opbeat_app_id }}"
+  cfg_opbeat_secret_token: "{{ opbeat_secret_token }}"
+
   # general
   home: "/home/{{ deployment_user }}"
   path: "{{ virtualenv_path }}/bin:/bin/:/usr/bin/:$PATH"

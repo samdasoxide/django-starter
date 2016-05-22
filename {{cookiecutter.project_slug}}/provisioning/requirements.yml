@@ -8,3 +8,6 @@
   version: 1.1.5
 
 - src: thefinn93.letsencrypt
+
+- src: geerlingguy.elasticsearch
+  version: 1.8

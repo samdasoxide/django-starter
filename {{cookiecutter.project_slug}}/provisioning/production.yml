@@ -14,5 +14,6 @@
     - {role: uwsgi}
     - {role: thefinn93.letsencrypt, become: yes, when: ssl}
     - {role: nginx}
+    - {role: geerlingguy.elasticsearch, become: yes, when: wagtail}
     - {role: django}
     - {role: backups, when: not is_vagrant}

@@ -1,3 +1,4 @@
-project_name: {{ cookiecutter.project_name }}
+project_name: {{ cookiecutter.project_slug }}
 git_uri: {{ cookiecutter.repo_url }}
 fqdn: {{ cookiecutter.domain_name }}
+wagtail: {% if cookiecutter.wagtail == "y" %}yes{% else %}no{% endif %}
