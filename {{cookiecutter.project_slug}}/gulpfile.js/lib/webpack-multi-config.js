@@ -46,6 +46,10 @@ module.exports = function(env) {
     }
 
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
+
+    // Change the public path in dev mode to get
+    // around django static file loaders
+    publicPath = pathToUrl(config.root.devDest, config.tasks.js.dest, '/');
   }
 
   if(env !== 'test') {

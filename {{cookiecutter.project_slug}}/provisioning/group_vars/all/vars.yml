@@ -116,7 +116,7 @@ env_vars:
   cfg_cache_backend: "django_redis.cache.RedisCache"
 
   # opbeat
-  cfg_opbeat_organization_id: "{{ opbeat_organization_}}"
+  cfg_opbeat_organization_id: "{{ opbeat_organization_id }}"
   cfg_opbeat_app_id: "{{ opbeat_app_id }}"
   cfg_opbeat_secret_token: "{{ opbeat_secret_token }}"
 

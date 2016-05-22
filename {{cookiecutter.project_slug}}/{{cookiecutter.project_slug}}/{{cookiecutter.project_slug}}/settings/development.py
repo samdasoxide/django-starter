@@ -7,8 +7,8 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project',
-        'USER': 'project',
+        'NAME': '{{ cookiecutter.project_slug }}',
+        'USER': '{{ cookiecutter.project_slug }}',
         'PASSWORD': 'some_super_secret_password',
         'HOST': '',
         'PORT': '',

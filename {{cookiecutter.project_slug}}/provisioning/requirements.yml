@@ -10,4 +10,4 @@
 - src: thefinn93.letsencrypt
 
 - src: geerlingguy.elasticsearch
-  version: 1.8
+  version: 2.0.1
