@@ -52,3 +52,9 @@ new functionality are likely to be merged upstream) are:
  - Monitoring: Currently there is only support for New Relic system monitoring
    built in. A lightweight on-premises solution or solutions would be eagerly
    entertained.
+
+## Licence and contributions
+
+The project is licensed under the MIT Licence and includes major contributions
+from other open source projects including
+[Gulp Starter](https://github.com/vigetlabs/gulp-starter).
