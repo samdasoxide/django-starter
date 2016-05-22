@@ -35,8 +35,8 @@ More information on the technology stack can be found in
     ```bash
     cookiecutter gh:rocketpod/django-starter
     ```
- 3. Take a look around: there are a number of other variables to configure in
-    `provisioning/group_vars/`.
+ 3. Take a look around: once you have templated your new project the newly created
+    `README.md` and `provisioning/README.md` files provide further details.
 
 
 ## Contributing
