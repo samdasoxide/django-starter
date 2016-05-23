@@ -1,6 +1,6 @@
 # Django starter
 
-Django starter is a **highly oppionated**
+Django starter is a **highly opinionated**
 [cookiecutter](https://github.com/audreyr/cookiecutter) template for starting
 new Django projects. It's what we use at [RocketPod](http://rocketpod.co.uk)
 and [Mediae](http://mediae.org) and may be useful to others.
