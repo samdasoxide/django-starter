@@ -83,6 +83,18 @@
   become: true
   become_user: "{{ deployment_user }}"
 
+- name: "ssh-agent hack: grant access to {{ deployment_user }}"
+  acl:
+    name: "{{ item }}"
+    etype: user
+    entity: "{{ deployment_user }}"
+    permissions: "rwx"
+    state: present
+  with_items:
+    - "{{ ansible_env.SSH_AUTH_SOCK|dirname }}"
+    - "{{ ansible_env.SSH_AUTH_SOCK }}"
+  become: yes
+
 # configure sftp users if necessary
 - name: ensure sftp users configured
   include: sftp.yml

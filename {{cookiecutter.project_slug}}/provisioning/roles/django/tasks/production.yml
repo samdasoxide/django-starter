@@ -2,15 +2,20 @@
 ---
 
 - name: ensure django log directory exists
-  file: path={{ django_log_dir }} state=directory
+  file:
+    path: "{{ django_log_dir }}"
+    owner: "root"
+    group: "deployment"
+    mode: "u=rwx,g=rwx,o=rx"
+    state: directory
   become: true
 
-- name: ensure application log exists
+- name: ensure application directory exists
   file:
-    path: "{{ django_log_file }}"
+    path: "{{ project_log_dir }}"
     owner: "{{ deployment_user }}"
     group: "{{ deployment_user }}"
-    state: touch
+    state: directory
   become: true
 
 - name: ensure django projects dir exists

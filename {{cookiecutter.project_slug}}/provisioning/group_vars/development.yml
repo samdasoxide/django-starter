@@ -16,7 +16,10 @@ django_dir: "{{ base_dir }}/{{ project_name }}"
 # users
 #
 
-deployment_user: vagrant
+deployment_user:
+  name: vagrant
+  state: present
+  real_name: ""
 
 #
 # virtualenv

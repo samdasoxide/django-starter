@@ -47,18 +47,6 @@
     validate: "visudo -cf %s"
   become: true
 
-- name: "ssh-agent hack: grant access to {{ deployment_user }}"
-  acl:
-    name: "{{ item }}"
-    etype: user
-    entity: "{{ deployment_user }}"
-    permissions: "rwx"
-    state: present
-  with_items:
-    - "{{ ansible_env.SSH_AUTH_SOCK|dirname }}"
-    - "{{ ansible_env.SSH_AUTH_SOCK }}"
-  become: yes
-
 - name: ensure git host is a known host
   lineinfile:
     dest: /etc/ssh/ssh_known_hosts

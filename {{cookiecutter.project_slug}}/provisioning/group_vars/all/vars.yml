@@ -12,13 +12,26 @@ git_version: master
 # users
 #
 
-users: []
-# sftp only users (jailed to SFTP in the users $HOME/files directory)
-sftp_users: []
-
 # list of public keys for use when creating users
 # public_keys:
-#   foo_user: public_key_here
+#   jane: public_key_here
+
+# list of users to create on the system
+users: []
+
+# Example (shadow_pass generated with mkpasswd -m sha-512):
+#
+# users:
+#  - name: jane
+#    state: present
+#    real_name: Jane Doe
+#    groups: developers
+#    shadow_pass: 6$Kl5y6Et.S$f2u79Xz8FngMlyCFqr5RiKzcuwKqcsDUj2O5UlZxUlj0O4toEe.2Z0m50I1EgGhxtINZcb1esu0Azqwq0mEfd1
+#    public_keys:
+#      - "{{ public_keys.jane }}"
+
+# sftp only users (jailed to SFTP in the users $HOME/files directory)
+sftp_users: []
 
 #
 # postgresql
@@ -67,11 +80,13 @@ redis_appendonly: "yes" # durability for using redis as queue
 django_settings_module: "{{ project_name }}.settings.{{ env }}"
 
 django_log_dir: /var/log/django
-django_log_file: "{{ django_log_dir }}/{{ project_name }}.log"
 
 uwsgi_log_dir: /var/log/uwsgi
 uwsgi_log_file: "{{ uwsgi_log_dir }}/{{ project_name }}.log"
 uwsgi_socket_path: "/home/{{ deployment_user }}/{{ project_name }}.sock"
+
+project_log_dir: "{{ django_log_dir }}/{{ project_name }}"
+project_log_file: "{{ project_log_dir }}/{{ project_name }}.log"
 
 # these environmental variables are made available to the deployment user
 # to allow for easy production env configuration
@@ -100,8 +115,8 @@ env_vars:
   cfg_server_email: "{{ project_name }}@{{ fqdn }}"
 
   # django:logging
-  cfg_log_dir: "{{ django_log_dir }}"
-  cfg_log_file: "{{ django_log_file }}"
+  cfg_log_dir: "{{ project_log_dir }}"
+  cfg_log_file: "{{ project_log_file }}"
   cfg_uwsgi_log_file: "{{ uwsgi_log_file }}"
 
   # django:static/media

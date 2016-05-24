@@ -5,12 +5,12 @@ import uuid
 
 from fabric.api import *
 
-STAGING_HOST = '{{ cookiecutter.domain_name }}'
-PRODUCTION_HOST = 'staging.{{ cookiecutter.domain_name }}'
+STAGING_HOST = 'staging.{{ cookiecutter.domain_name }}'
+PRODUCTION_HOST = '{{ cookiecutter.domain_name }}'
 
 env.roledefs = {
     'staging': ['{{ cookiecutter.project_slug }}@{}'.format(STAGING_HOST)],
-    'production': ['{{ cookiecutter.project_slug }}@{}@{}'.format(PRODUCTION_HOST)],
+    'production': ['{{ cookiecutter.project_slug }}@{}'.format(PRODUCTION_HOST)],
 }
 env.always_use_pty = False
 
@@ -124,7 +124,7 @@ def register_deployment(git_path):
     with(lcd(git_path)):
         revision = local('git log -n 1 --pretty="format:%H"', capture=True)
         branch = local('git rev-parse --abbrev-ref HEAD', capture=True)
-        local('curl https://intake.opbeat.com/api/v1/organizations/{ org_id}/apps/{app_id}/releases/'
+        local('curl https://intake.opbeat.com/api/v1/organizations/{org_id}/apps/{app_id}/releases/'
               ' -H "Authorization: Bearer {secret_token}"'
               ' -d rev="{rev}"'
               ' -d branch="{branch}"'

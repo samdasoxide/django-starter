@@ -32,6 +32,7 @@
     path: "{{ uwsgi_log_file }}"
     owner: "{{ deployment_user }}"
     group: "root"
+    mode: "u=rwx,g=rwx,o=rx"
     state: touch
   become: true
 

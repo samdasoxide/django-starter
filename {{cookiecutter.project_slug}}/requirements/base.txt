@@ -1,8 +1,10 @@
-ConcurrentLogHandler==0.9.1
 django-redis==4.4.3
 django>=1.9,<1.10
 opbeat
 psycopg2==2.6.1
 {%- if cookiecutter.wagtail == "y" %}
 wagtail==1.5rc1
+elasticsearch==2.3.0
+Pillow==3.2.0
+django-taggit==0.19.0
 {%- endif %}

@@ -45,7 +45,7 @@ STATIC_ROOT = os.getenv('CFG_STATIC_DIR')
 LOGGING['handlers']['logfile'] = {
     'level': 'DEBUG',
     'class': 'cloghandler.ConcurrentRotatingFileHandler',
-    'filename': os.getenv('CFG_LOG_FILE'),
+    'filename': os.getenv('CFG_LOG_DIR'),
     'maxBytes': 5242880,  # 5MB
     'backupCount': 5,
     'formatter': 'verbose',
