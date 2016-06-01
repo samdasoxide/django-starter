@@ -51,8 +51,14 @@ LOGGING['handlers']['logfile'] = {
     'formatter': 'verbose',
 }
 
-# add logfile handler to the root logger
-LOGGING['root']['handlers'] += ['logfile']
+# configure opbeat handler
+LOGGING['handlers']['opbeat'] = {
+    'level': 'WARNING',
+    'class': 'opbeat.contrib.django.handlers.OpbeatHandler',
+}
+
+# add additional handlers to the root logger
+LOGGING['root']['handlers'] += ['logfile', 'opbeat']
 
 # define production loggers (overrides base loggers)
 LOGGING['loggers'] = {
@@ -61,8 +67,14 @@ LOGGING['loggers'] = {
         'propagate': True,
     },
     'django.request': {
-        'handlers': ['mail_admins', 'logfile'],
+        'handlers': ['mail_admins', 'logfile', 'opbeat'],
         'level': 'ERROR',
+        'propagate': False,
+    },
+    # Log errors from the Opbeat module to the console (recommended)
+    'opbeat.errors': {
+        'level': 'ERROR',
+        'handlers': ['console'],
         'propagate': False,
     },
 }

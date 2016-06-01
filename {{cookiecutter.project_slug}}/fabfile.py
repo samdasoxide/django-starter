@@ -49,6 +49,9 @@ def deploy():
     # 'restart' should be an alias to a script that restarts the web server
     run('restart')
 
+    if env['host'] == PRODUCTION_HOST:
+        register_deployment('.')
+
 
 def pull_data():
     if env['host'] == STAGING_HOST:
@@ -118,7 +121,6 @@ def pull_production_content():
     pull_production_media()
 
 
-@task
 @runs_once
 def register_deployment(git_path):
     with(lcd(git_path)):
