@@ -3,7 +3,7 @@ from __future__ import with_statement
 import os
 import uuid
 
-from fabric.api import *
+from fabric.api import *  # NOQA
 
 STAGING_HOST = 'staging.{{ cookiecutter.domain_name }}'
 PRODUCTION_HOST = '{{ cookiecutter.domain_name }}'
@@ -44,6 +44,10 @@ def deploy():
     run('git pull origin {}'.format(branch))
     run('pip install -r requirements/production.txt')
     run('dj migrate --noinput')
+
+    # install/process frontend assets/deps
+    run('npm install')
+    run('npm run production')
     run('dj collectstatic --noinput')
 
     # 'restart' should be an alias to a script that restarts the web server
