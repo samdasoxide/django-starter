@@ -51,5 +51,6 @@
     repo: "{{ git_uri }}"
     dest: "{{ base_dir }}"
     version: "{{ git_version }}"
+    update: no
   become: true
   become_user: "{{ deployment_user }}"
