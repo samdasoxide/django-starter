@@ -17,3 +17,4 @@
     - {role: geerlingguy.elasticsearch, become: yes, when: wagtail}
     - {role: django}
     - {role: backups, when: not is_vagrant}
+    - {role: newrelic, when: not is_vagrant}

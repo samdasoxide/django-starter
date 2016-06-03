@@ -22,6 +22,7 @@
   apt:
     update_cache: yes
   when: newrelic_repo.changed
+  become: yes
 
 - name: install newrelic-sysmond
   apt:
@@ -29,6 +30,7 @@
     state: latest
     update_cache: yes
     cache_valid_time: "{{ apt_cache_valid_time }}"
+  become: yes
   notify:
     - restart newrelic-sysmond
 
