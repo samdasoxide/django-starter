@@ -4,17 +4,27 @@
 - hosts: production
   become_method: sudo
   roles:
-    - {role: base}
-    - {role: security}
-    - {role: users}
-    - {role: ANXS.postgresql, become: yes}
-    - {role: geerlingguy.redis, become: yes}
-    - {role: postfix}
-    - {role: nodejs}
-    - {role: uwsgi}
-    - {role: thefinn93.letsencrypt, become: yes, when: ssl}
-    - {role: nginx}
-    - {role: geerlingguy.elasticsearch, become: yes, when: wagtail}
-    - {role: django}
-    - {role: backups, when: not is_vagrant}
-    - {role: newrelic, when: not is_vagrant}
+    - {role: base, tags: ['base']}
+    - {role: security, tags: ['security']}
+    - {role: users, tags: ['users']}
+    - {role: ANXS.postgresql, become: yes, tags: ['postgres']}
+    - {role: geerlingguy.redis, become: yes, tags: ['redis']}
+    - {role: postfix, tags: ['postfix']}
+    - {role: nodejs, tags: ['nodejs']}
+    - {role: uwsgi, tags: ['uwsgi']}
+    - {
+        role: thefinn93.letsencrypt,
+        become: yes,
+        when: ssl and not is_vagrant,
+        tags: ['letsencrypt']
+      }
+    - {role: nginx, tags: ['nginx']}
+    - {
+        role: geerlingguy.elasticsearch,
+        become: yes,
+        when: wagtail,
+        tags: ['elasticsearch']
+      }
+    - {role: django, tags: ['django']}
+    - {role: backups, when: not is_vagrant, tags: ['backups']}
+    - {role: newrelic, when: not is_vagrant, tags: ['newrelic']}
