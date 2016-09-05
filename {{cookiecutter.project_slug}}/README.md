@@ -61,7 +61,10 @@
     $ ssh-add
     ```
 
- 8. Bring the vagrant box up and start the development server
+ 8. Ensure that you have the project's Ansible vault password stored in
+    `.vault_pass.txt` (see `provisioning/README.md` for more information).
+
+ 9. Bring the vagrant box up and start the development server
 
     ```bash
     $ vagrant up development
@@ -69,7 +72,7 @@
     $ cd {{ cookiecutter.project_slug }}/
     $ ./manage.py runserver 0.0.0.0:8000
     ```
- 9. Start the frontend asset processing pipeline. This will automatically open
+ 10. Start the frontend asset processing pipeline. This will automatically open
     a browser window with [Browsersync](https://www.browsersync.io/) which
     automatically refreshes when changes are made to templates or static assets.
 
