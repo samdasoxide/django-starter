@@ -47,4 +47,10 @@ letsencrypt_renewal_frequency:
   day: "*"
   hour: 0
   minute: 0
-letsencrypt_renewal_command_args: 'systemctl restart nginx'
+
+# edit to enable monitoring of the renewal cronjob using healthchecks.io
+letsencrypt_renewal_healthcheck_token: ''
+lets_encrypt_renewal_monitor_cmd: 'curl -fsS --retry 3 https://hchk.io/{{ letsencrypt_renewal_healthcheck_token }}'
+# letsencrypt_renewal_command_args: '&& systemctl reload nginx && {{ lets_encrypt_renewal_monitor_cmd}}'
+
+letsencrypt_renewal_command_args: '&& systemctl reload nginx'
