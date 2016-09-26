@@ -7,7 +7,8 @@
 
 LANG=C
 HOME=/root
-export LANG HOME
+PGUSER=postgres
+export LANG HOME PGUSER
 
 DIR="/var/backups/pgsql"
 OPTS="-Fp -bcOx --if-exists"
@@ -24,10 +25,10 @@ for db in $(psql -Atc 'SELECT datname FROM pg_database' template1 | egrep -v -- 
 
 	echo "==> ${db}"
 
-	# Only keep the 2 most recent full backups, and the 33 most
+	# Only keep the 2 most recent full backups, and the 16 most
 	# recent diffs.
 	( ls -1rt *.sql.gz | head -n -2 | xargs rm ) >/dev/null 2>&1 || true
-	( ls -1rt *.sql.diff.gz | head -n -33 | xargs rm ) >/dev/null 2>&1 || true
+	( ls -1rt *.xdelta | head -n -16 | xargs rm ) >/dev/null 2>&1 || true
 
 	lastfull=$(ls -1tr | grep "${db}\.full\.....-..-..\.sql\.gz" | tail -1)
 
@@ -39,14 +40,11 @@ for db in $(psql -Atc 'SELECT datname FROM pg_database' template1 | egrep -v -- 
 		fname="$(date +"${db}.incr.%Y-%m-%d.sql")"
 		pg_dump ${OPTS} "${db}" > "${fname}"
 
-		# xdelta returns 0 if no differences were found,
-		# 1 if some differences were found, and 2 on error.
-		set +e
-		xdelta delta -m32m "${lastfull}" "${fname}" "${fname}.xdelta"
-		if [ $? -ge 2 ]; then
-			exit 1
-		fi
-		set -e
+		xdelta3 -9 -I 0 -S djw -B 134217728 -W 16777216 -P 524288 -e -f -s "${lastfull}" "${fname}" "${fname}.xdelta"
 		rm -f "${fname}"
 	fi
 done
+
+{% if dump_pgsql_healthcheck_token %}
+    curl -fsS --retry 3 https://hchk.io/{{ dump_pgsql_healthcheck_token }}
+{% endif %}

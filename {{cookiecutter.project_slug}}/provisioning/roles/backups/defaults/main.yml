@@ -1,0 +1,11 @@
+---
+backups_apt_packages:
+  - backup2l
+  - xdelta3
+  - s3cmd
+  - curl
+
+backup_dir: /var/backups/backup2l
+
+backup2l_healthcheck_token: ''
+dump_pgsql_healthcheck_token: ''
