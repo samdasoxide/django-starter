@@ -20,7 +20,7 @@
       }
     - {role: nginx, tags: ['nginx']}
     - {
-        role: geerlingguy.elasticsearch,
+        role: elasticsearch,
         become: yes,
         when: wagtail,
         tags: ['elasticsearch']

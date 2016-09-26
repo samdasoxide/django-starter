@@ -9,5 +9,5 @@
 
 - src: thefinn93.letsencrypt
 
-- src: geerlingguy.elasticsearch
-  version: 2.1.2
+#- src: geerlingguy.elasticsearch
+#  version: 2.1.2
