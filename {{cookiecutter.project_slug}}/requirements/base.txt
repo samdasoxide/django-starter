@@ -1,6 +1,5 @@
 django-redis==4.5.0
 django>=1.9,<1.11
-opbeat
 psycopg2==2.6.2
 {%- if cookiecutter.wagtail == "y" %}
 wagtail==1.6.2

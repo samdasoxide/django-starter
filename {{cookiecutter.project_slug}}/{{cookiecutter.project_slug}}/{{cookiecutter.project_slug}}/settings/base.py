@@ -4,7 +4,6 @@ Django settings for {{ cookiecutter.project_name }}
 
 from __future__ import absolute_import, unicode_literals
 
-import os
 from os import path
 
 PROJECT_DIR = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
@@ -133,7 +132,7 @@ STATICFILES_FINDERS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = path.join(BASE_DIR, 'public', 'media')
 
-{%- if cookiecutter.wagtail == "y" %}
+{% if cookiecutter.wagtail == "y" -%}
 # Wagtail
 # -----------------------------------------------------------------------------
 WAGTAIL_APPS = [

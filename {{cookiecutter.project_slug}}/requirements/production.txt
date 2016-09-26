@@ -1,2 +1,8 @@
 -r base.txt
 ConcurrentLogHandler==0.9.1
+{%- if cookiecutter.opbeat == "y" %}
+opbeat
+{%- endif %}
+{%- if cookiecutter.sentry == "y" %}
+ raven
+{%- endif %}
