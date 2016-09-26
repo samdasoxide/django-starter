@@ -4,6 +4,8 @@
     "repo_url": "git://github.com/rocketpod/django-starter.git",
     "description": "A short description of the project.",
     "wagtail": ["y","n"],
+    "opbeat": ["y","n"],
+    "sentry": ["y","n"],
     "domain_name": "example.com",
     "_copy_without_render": [
         "*.html",

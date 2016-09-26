@@ -36,3 +36,9 @@
 - name: install nodejs
   apt: name=nodejs state=latest update_cache=yes
   become: yes
+
+- name: Create temp static directory in development
+  file:
+    path: "{{ base_dir }}/tmp/static"
+    state: directory
+  when: env == 'development'

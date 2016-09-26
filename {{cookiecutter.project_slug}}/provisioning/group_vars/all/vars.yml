@@ -192,7 +192,6 @@ is_vagrant: no
 # backups
 #
 
-s3cmd_aws_bucket: ""
 backup_directories:
   - /etc
   - /root

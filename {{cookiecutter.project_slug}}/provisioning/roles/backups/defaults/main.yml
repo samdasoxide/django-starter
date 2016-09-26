@@ -7,5 +7,7 @@ backups_apt_packages:
 
 backup_dir: /var/backups/backup2l
 
+backup_aws_bucket: ""
+
 backup2l_healthcheck_token: ''
 dump_pgsql_healthcheck_token: ''
