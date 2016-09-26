@@ -3,7 +3,7 @@ from __future__ import with_statement
 import os
 import uuid
 
-from fabric.api import *  # NOQA
+from fabric.api import env, get, lcd, local, puts, roles, run, runs_once
 
 STAGING_HOST = 'staging.{{ cookiecutter.domain_name }}'
 PRODUCTION_HOST = '{{ cookiecutter.domain_name }}'
@@ -13,6 +13,7 @@ env.roledefs = {
     'production': ['{{ cookiecutter.project_slug }}@{}'.format(PRODUCTION_HOST)],
 }
 env.always_use_pty = False
+env.forward_agent = True
 
 PROJECT_NAME = '{{ cookiecutter.project_slug }}'
 LOCAL_DB_NAME = '{{ cookiecutter.project_slug }}'
@@ -21,8 +22,8 @@ LOCAL_DUMP_PATH = '/tmp/'
 
 REMOTE_DB_NAME = '$CFG_DB_NAME'
 REMOTE_DB_USERNAME = '$CFG_DB_USER'
-REMOTE_PROJECT_PATH = '$D/'
-REMOTE_DUMP_PATH = '{}tmp/'.format(REMOTE_PROJECT_PATH)
+REMOTE_PROJECT_PATH = '$D'
+REMOTE_DUMP_PATH = '{}/tmp/'.format(REMOTE_PROJECT_PATH)
 
 
 def populate_remote_variables(input_string):
@@ -32,15 +33,7 @@ def populate_remote_variables(input_string):
     return run('echo {}'.format(input_string), pty=False)
 
 
-def deploy():
-
-    if env['host'] == STAGING_HOST:
-        branch = 'staging'
-    elif env['host'] == PRODUCTION_HOST:
-        branch = 'master'
-    else:
-        raise RuntimeError("Unrecognised host.")
-
+def deploy(branch):
     run('git pull origin {}'.format(branch))
     run('pip install -r requirements/production.txt')
     run('dj migrate --noinput')
@@ -58,21 +51,13 @@ def deploy():
 
 
 def pull_data():
-    if env['host'] == STAGING_HOST:
-        # NOTE use absolute path to `pg_dump`, due to Postgres-Debian mismatches
-        pg_dump_path = '/usr/bin/pg_dump'
-    elif env['host'] == PRODUCTION_HOST:
-        pg_dump_path = 'pg_dump'
-    else:
-        raise RuntimeError("Unrecognised host.")
-
     filename = "{}-{}.sql".format(PROJECT_NAME, uuid.uuid4())
     local_path = "{}{}".format(LOCAL_DUMP_PATH, filename)
     remote_path = "{}{}".format(REMOTE_DUMP_PATH, filename)
     local_db_backup_path = "{}vagrant-{}-{}.sql".format(LOCAL_DUMP_PATH, LOCAL_DB_NAME, uuid.uuid4())
     non_env_remote_path = populate_remote_variables(remote_path)
 
-    run('{} -U{} -xOf {} {}'.format(pg_dump_path, REMOTE_DB_USERNAME, remote_path, REMOTE_DB_NAME))
+    run('pg_dump -U{} -xOf {} {}'.format(REMOTE_DB_USERNAME, remote_path, REMOTE_DB_NAME))
     run('gzip {}'.format(remote_path))
     get("{}.gz".format(non_env_remote_path), "{}.gz".format(local_path))
     run('rm {}.gz'.format(remote_path))
@@ -103,8 +88,15 @@ def pull_media():
     local('rm -f {}'.format(local_media_dump))
 
 
-deploy_staging = roles('staging')(deploy)
-deploy_production = roles('production')(deploy)
+@roles('staging')
+def deploy_staging():
+    deploy('develop')
+
+
+@roles('production')
+def deploy_production():
+    deploy('master')
+
 
 pull_staging_data = roles('staging')(pull_data)
 pull_production_data = roles('production')(pull_data)
