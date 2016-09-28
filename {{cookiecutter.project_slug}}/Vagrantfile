@@ -11,7 +11,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Modify virtualbox opts
     config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", "1024"]
+        vb.memory = 1024
+        # Bugfix for "Cable connected: off (debian/jessie64 v8.6)
+        vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
     end
 
     # Forward ssh agent to share host credentials with the guest VM.
