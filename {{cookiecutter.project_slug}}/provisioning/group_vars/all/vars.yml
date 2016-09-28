@@ -5,8 +5,12 @@
 # general
 #
 
+deployment_slug: "{{ project_slug }}"
 git_host: github.com
 git_version: master
+# overridden by django for vagrant specific settings
+is_vagrant: no
+apt_cache_valid_time: 3600
 
 #
 # users
@@ -31,6 +35,7 @@ users: []
 #      - "{{ public_keys.jane }}"
 
 # sftp only users (jailed to SFTP in the users $HOME/files directory)
+# NOTE: DEPRECIATED! Will be removed in future version.
 sftp_users: []
 
 #
@@ -47,7 +52,7 @@ postgresql_users:
     encrypted: "{{ deployment_database.encrypted }}"
 
 # postgresql_database_extensions:
-#   - db: "{{ project_name }}"
+#   - db: "{{ deployment_slug }}"
 #     extensions:
 #       - postgis
 
@@ -77,26 +82,28 @@ redis_appendonly: "yes" # durability for using redis as queue
 # django
 #
 
-django_settings_module: "{{ project_name }}.settings.{{ env }}"
+django_settings_module: "{{ project_slug }}.settings.{{ env }}"
+
+django_projects_dir: /usr/local/django
+project_dir: "{{ django_projects_dir }}/{{ fqdn }}"
+django_dir: "{{ project_dir }}/{{ deployment_slug }}"
 
 django_log_dir: /var/log/django
 
 uwsgi_log_dir: /var/log/uwsgi
-uwsgi_log_file: "{{ uwsgi_log_dir }}/{{ project_name }}.log"
-uwsgi_socket_path: "/home/{{ deployment_user }}/{{ project_name }}.sock"
+uwsgi_log_file: "{{ uwsgi_log_dir }}/{{ deployment_slug }}.log"
+uwsgi_socket_path: "/home/{{ deployment_user }}/{{ deployment_slug }}.sock"
 
-project_log_dir: "{{ django_log_dir }}/{{ project_name }}"
-project_log_file: "{{ project_log_dir }}/{{ project_name }}.log"
+project_log_dir: "{{ django_log_dir }}/{{ deployment_slug }}"
+project_log_file: "{{ project_log_dir }}/{{ deployment_slug }}.log"
 
 # these environmental variables are made available to the deployment user
 # to allow for easy production env configuration
 env_vars:
   # django:general
-  cfg_app_name: "{{ project_name }}"
   cfg_server_name: "{{ fqdn }}"
-  cfg_environment_type: "production"
   cfg_secret_key: "{{ django_secret_key }}"
-  cfg_wsgi_module: "{{ project_name }}.wsgi"
+  cfg_wsgi_module: "{{ project_slug }}.wsgi"
 
   django_settings_module: "{{ django_settings_module }}"
 
@@ -110,9 +117,9 @@ env_vars:
 
   # django:email
   cfg_email_prefix: "[{{ project_name }}] "
-  cfg_email_sender: "{{ project_name }}@{{ fqdn }}"
+  cfg_email_sender: "{{ project_slug }}@{{ fqdn }}"
   cfg_email_subject_prefix: "[{{ project_name }}] "
-  cfg_server_email: "{{ project_name }}@{{ fqdn }}"
+  cfg_server_email: "{{ project_slug }}@{{ fqdn }}"
 
   # django:logging
   cfg_log_dir: "{{ project_log_dir }}"
@@ -153,48 +160,4 @@ env_vars:
 # nginx
 #
 
-nginx_dir: /etc/nginx
-nginx_confd_dir: "{{nginx_dir}}/conf.d"
-nginx_app_error_log: "/var/log/nginx/{{ project_name }}_error.log"
-nginx_app_access_log: "/var/log/nginx/{{ project_name }}_access.log"
-
 ssl: no
-dhe_param_path: /etc/ssl/certs/dhparam.pem
-
-ssl_cert_path: "/etc/ssl/certs/{{ project_name }}.crt-bundle"
-ssl_key_path: "/etc/ssl/certs/{{ project_name }}.key"
-
-nginx_shared_confs:
-  - {file: ssl_params, directory: "{{ nginx_dir }}", filename: ssl_params}
-  - {file: gzip_params, directory: "{{ nginx_dir }}", filename: gzip_params}
-
-nginx_site_confs:
-  - {
-      file: "site.conf",
-      directory: "{{ nginx_confd_dir }}",
-      filename: "{{ fqdn }}.conf"
-  }
-
-#
-# apt
-#
-
-apt_cache_valid_time: 3600
-
-#
-# vagrant
-#
-
-# overridden by django for vagrant specific settings
-is_vagrant: no
-
-#
-# backups
-#
-
-backup_directories:
-  - /etc
-  - /root
-  - /home
-  - /usr/local
-  - /var/backups/pgsql

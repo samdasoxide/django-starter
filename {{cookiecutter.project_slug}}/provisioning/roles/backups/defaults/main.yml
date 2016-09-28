@@ -7,6 +7,13 @@ backups_apt_packages:
 
 backup_dir: /var/backups/backup2l
 
+backup_directories:
+  - /etc
+  - /root
+  - /home
+  - /usr/local
+  - /var/backups/pgsql
+
 backup_aws_bucket: ""
 
 backup2l_healthcheck_token: ''

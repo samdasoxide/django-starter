@@ -5,6 +5,7 @@
 # general
 #
 
+deployment_slug: "{{ project_slug }}-staging"
 env: staging
 
 fqdn: staging.{{ fqdn }}

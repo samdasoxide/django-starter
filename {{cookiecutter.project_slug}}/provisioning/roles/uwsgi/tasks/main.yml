@@ -39,13 +39,13 @@
 - name: install uwsgi vassal
   template:
     src: site.ini
-    dest: "/etc/uwsgi-emperor/vassals/{{ project_name }}"
+    dest: "/etc/uwsgi-emperor/vassals/{{ deployment_slug }}"
   become: true
 
 - name: create symlink to vassal
   file:
-    src: "/etc/uwsgi-emperor/vassals/{{ project_name }}"
-    dest: "/etc/uwsgi-emperor/vassals/{{ project_name }}.ini"
+    src: "/etc/uwsgi-emperor/vassals/{{ deployment_slug }}"
+    dest: "/etc/uwsgi-emperor/vassals/{{ deployment_slug }}.ini"
     owner: "{{ deployment_user }}"
     group: "{{ deployment_user }}"
     mode: 777

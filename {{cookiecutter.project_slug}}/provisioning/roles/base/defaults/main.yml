@@ -3,7 +3,6 @@
 
 base_apt_packages:
   - build-essential
-  - anacron
   - unattended-upgrades
   - bash-completion
   - ntp
@@ -12,6 +11,7 @@ base_apt_packages:
   - python
   - python-dev
   - python-pip
+  - curl
 
 base_python_packages:
   - virtualenv

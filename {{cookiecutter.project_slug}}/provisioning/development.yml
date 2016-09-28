@@ -3,6 +3,8 @@
 
 - hosts: development
   become_method: sudo
+  vars_files:
+    - vars/development.yml
   roles:
     - {role: base}
     - {role: users}

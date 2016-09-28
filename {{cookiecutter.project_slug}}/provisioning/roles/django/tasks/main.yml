@@ -2,7 +2,7 @@
 ---
 - name: run production configuration
   include: production.yml
-  when: env == 'production'
+  when: env != 'development'
 
 - name: install system package dependencies
   apt:

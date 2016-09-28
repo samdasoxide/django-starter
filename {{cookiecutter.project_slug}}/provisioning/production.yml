@@ -3,6 +3,8 @@
 
 - hosts: production
   become_method: sudo
+  vars_files:
+    - vars/production.yml
   roles:
     - {role: base, tags: ['base']}
     - {role: security, tags: ['security']}

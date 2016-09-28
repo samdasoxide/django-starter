@@ -12,13 +12,13 @@ env: production
 
 django_projects_dir: /usr/local/django
 base_dir: "{{ django_projects_dir }}/{{ fqdn }}"
-django_dir: "{{ base_dir }}/{{ project_name }}"
+django_dir: "{{ base_dir }}/{{ project_slug }}"
 
 #
 # users
 #
 
-deployment_user: "{{ project_name }}"
+deployment_user: "{{ project_slug }}"
 
 users:
   - name: "{{ deployment_user }}"
@@ -30,7 +30,7 @@ users:
 #
 
 virtualenv_root: "{{ django_projects_dir }}/virtualenvs"
-virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"
+virtualenv_path: "{{ virtualenv_root }}/{{ project_slug }}"
 
 #
 # letsencrypt
@@ -38,7 +38,7 @@ virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"
 
 letsencrypt_cert_domains:
   - "{{ fqdn }}"
-# - "www.{{ fqdn }}"
+  - "www.{{ fqdn }}"
 
 letsencrypt_webroot_path: /var/www/letsencrypt/
 letsencrypt_authenticator: webroot
@@ -51,6 +51,6 @@ letsencrypt_renewal_frequency:
 # edit to enable monitoring of the renewal cronjob using healthchecks.io
 letsencrypt_renewal_healthcheck_token: ''
 lets_encrypt_renewal_monitor_cmd: 'curl -fsS --retry 3 https://hchk.io/{{ letsencrypt_renewal_healthcheck_token }}'
-# letsencrypt_renewal_command_args: '&& systemctl reload nginx && {{ lets_encrypt_renewal_monitor_cmd}}'
+# letsencrypt_renewal_command_args: '&& systemctl reload nginx && {{ lets_encrypt_renewal_monitor_cmd }}'
 
 letsencrypt_renewal_command_args: '&& systemctl reload nginx'

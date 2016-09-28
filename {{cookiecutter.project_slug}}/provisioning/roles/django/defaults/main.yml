@@ -1,4 +1,8 @@
 ---
+django_projects_dir: /usr/local/django
+project_dir: "{{ django_projects_dir }}/{{ fqdn }}"
+django_dir: "{{ project_dir }}/{{ project_slug }}"
+
 django_apt_dependencies:
     # requests[security]
     - python-cffi

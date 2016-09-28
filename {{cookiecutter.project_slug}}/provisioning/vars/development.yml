@@ -8,8 +8,8 @@
 env: development
 fqdn: "{{ project_name }}.local"
 
-base_dir: "/home/vagrant/{{ project_name }}"
-django_dir: "{{ base_dir }}/{{ project_name }}"
+base_dir: "/home/vagrant/{{ project_slug }}"
+django_dir: "{{ base_dir }}/{{ project_slug }}"
 
 
 #
@@ -23,4 +23,4 @@ deployment_user: vagrant
 #
 
 virtualenv_root: /home/vagrant/.virtualenvs
-virtualenv_path: "{{ virtualenv_root }}/{{ project_name }}"
+virtualenv_path: "{{ virtualenv_root }}/{{ project_slug }}"

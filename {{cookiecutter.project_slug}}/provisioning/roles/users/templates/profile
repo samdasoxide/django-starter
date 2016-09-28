@@ -7,7 +7,7 @@ if tty -s; then
     echo ">>> Deployment account for {{ project_name }}."
     echo ""
     echo "virtualenv (\$V):          $VIRTUAL_ENV"
-    echo "application (\$D):         /usr/local/django/{{ fqdn }}"
+    echo "application (\$D):         {{ base_dir }}"
     echo "\$DJANGO_SETTINGS_MODULE:  $DJANGO_SETTINGS_MODULE"
     echo ""
     echo "'manage' aliased to {{ django_dir }}/manage.py."

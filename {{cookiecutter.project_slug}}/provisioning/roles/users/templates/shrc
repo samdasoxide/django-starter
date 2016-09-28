@@ -11,7 +11,7 @@ if [ "`uname`" = FreeBSD -o ! -z "$BASH_VERSION" ]; then
 
     if [ ! -z "$BASH_VERSION" ]; then
         PROMPT_DIRTRIM=3
-        PS1='\n[\h:{{ project_name }}] \w$(__git_ps1)\n{\!} \u> '
+        PS1='\n[\h:{{ deployment_slug }}] \w$(__git_ps1)\n{\!} \u> '
     else
         PS1='\h:\w\$ '
     fi
@@ -28,12 +28,12 @@ dj() {
 restart() {
     /bin/sh -c '
 tail -f -n0 {{ uwsgi_log_file }} & tailpid=$!
-touch -h /etc/uwsgi-emperor/vassals/{{ project_name }}.ini
+touch -h /etc/uwsgi-emperor/vassals/{{ deployment_slug }}.ini
 sleep 7
 kill $tailpid; wait
 '
 }
 
 uwsgitop() {
-    command /usr/local/bin/uwsgitop $HOME/{{ project_name }}.stats
+    command /usr/local/bin/uwsgitop $HOME/{{ deployment_slug }}.stats
 }

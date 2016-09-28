@@ -10,12 +10,20 @@
     state: directory
   become: true
 
-- name: ensure application directory exists
+- name: ensure application log directory exists
   file:
     path: "{{ project_log_dir }}"
     owner: "{{ deployment_user }}"
     group: "{{ deployment_user }}"
     state: directory
+  become: true
+
+- name: ensure application log file exists
+  file:
+    path: "{{ project_log_file }}"
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_user }}"
+    state: touch
   become: true
 
 - name: ensure django projects dir exists
