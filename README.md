@@ -1,3 +1,5 @@
+[![Updates](https://pyup.io/repos/github/rocketpod/django-starter/shield.svg)](https://pyup.io/repos/github/rocketpod/django-starter/)
+
 # Django starter
 
 Django starter is a **highly opinionated**
@@ -20,7 +22,7 @@ More information on the technology stack can be found in
  - redis
  - PostgreSQL
  - elasticsearch (for wagtail)
- - opbeat
+ - Sentry / Opbeat (optional)
  - etc.
 
 ## Usage
