@@ -1,6 +1,5 @@
 from __future__ import absolute_import, unicode_literals
 
-import logging
 import os
 
 from .base import *  # NOQA
@@ -140,9 +139,7 @@ logging['root']['handlers'] += 'opbeat'
 SENTRY_DSN = os.getenv('CFG_SENTRY_DSN')
 SENTRY_CLIENT = 'raven.contrib.django.raven_compat.DjangoClient'
 
-SENTRY_CELERY_LOGLEVEL = logging.WARN
 RAVEN_CONFIG = {
-    'CELERY_LOGLEVEL': logging.WARN,
     'DSN': SENTRY_DSN
 }
 
