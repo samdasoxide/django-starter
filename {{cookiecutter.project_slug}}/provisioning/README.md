@@ -33,10 +33,10 @@ are stored using
 The vault password is currently set to "examplepassword". You should
 [rekey](http://docs.ansible.com/ansible/playbooks_vault.html#rekeying-encrypted-files)
 the vault using a secure password that you transfer out-of-band between
-colaborators and ensure is never commited to version control.
+collaborators and ensure is never committed to version control.
 
 To edit the secrets file create `.vault_pass.txt` with the password you
-provided when rekeying the vault and execute the following command:
+provided when re-keying the vault and execute the following command:
 
 ```
 $ ansible-vault edit provisioning/group_vars/all/vault.yml --vault-password-file .vault_pass.txt
@@ -56,7 +56,7 @@ An instance of any environment can be created locally using
 testing configuration changes before running the playbooks against production
 hosts. That said, there are some slight differences between running the
 playbook against a vagrant machine and against a production machine. These are
-handled by the `is_vagrant` ansible variable.
+handled by the `is_vagrant` Ansible variable.
 
 ## Deployment user
 
@@ -169,7 +169,7 @@ optionally [PostGIS](http://postgis.net/).
 
 #### [`geerlingguy.redis`](https://galaxy.ansible.com/geerlingguy/redis/)
 
-Used to install and configure redis. Very simple setup, only setting modified
+Used to install and configure Redis. Very simple setup, only setting modified
 is use of Redis append only file (`appendonly.aof`) as we often use Redis as a
 queue and we want the durability.
 

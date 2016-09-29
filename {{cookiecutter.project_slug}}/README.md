@@ -2,7 +2,7 @@
 
 ## Developer setup
 
- 1. Ensure you have ansible installed
+ 1. Ensure you have Ansible installed
 
     ```bash
     $ sudo apt-get install software-properties-common
