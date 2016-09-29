@@ -1,7 +1,6 @@
 # Defines variables for all hosts
 ---
 
-#
 # general
 #
 
@@ -141,6 +140,9 @@ env_vars:
   cfg_opbeat_organization_id: "{{ opbeat_organization_id }}"
   cfg_opbeat_app_id: "{{ opbeat_app_id }}"
   cfg_opbeat_secret_token: "{{ opbeat_secret_token }}"
+
+  # Sentry
+  cfg_sentry_dsn: "{{ sentry_dsn }}"
 
   # general
   home: "/home/{{ deployment_user }}"
