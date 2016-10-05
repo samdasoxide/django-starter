@@ -13,14 +13,6 @@
     - uwsgi-plugin-python
   become: true
 
-- name: install uwsgitop
-  pip: name=uwsgitop state=latest
-  become: true
-
-- name: configure uwsgi-emperor
-  template: src=emperor.ini dest=/etc/uwsgi-emperor/emperor.ini
-  become: true
-
 - name: uwsgi log directory exists
   file:
     path: "{{ uwsgi_log_dir }}"
@@ -31,9 +23,17 @@
   file:
     path: "{{ uwsgi_log_file }}"
     owner: "{{ deployment_user }}"
-    group: "root"
-    mode: "u=rwx,g=rwx,o=rx"
+    group: "{{ deployment_user }}"
+    mode: "u=rw,g=rw,o=r"
     state: touch
+  become: true
+
+- name: install uwsgitop
+  pip: name=uwsgitop state=latest
+  become: true
+
+- name: configure uwsgi-emperor
+  template: src=emperor.ini dest=/etc/uwsgi-emperor/emperor.ini
   become: true
 
 - name: install uwsgi vassal

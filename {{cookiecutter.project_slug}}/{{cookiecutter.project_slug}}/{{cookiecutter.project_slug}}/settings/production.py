@@ -66,7 +66,7 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'cloghandler.ConcurrentRotatingFileHandler',
-            'filename': os.getenv('CFG_LOG_DIR'),
+            'filename': os.getenv('CFG_LOG_FILE'),
             'maxBytes': 5242880,  # 5MB
             'backupCount': 5,
             'formatter': 'verbose',
@@ -104,7 +104,7 @@ LOGGING = {
     }
 }
 
-{%- if cookiecutter.opbeat == 'y' -%}
+{% if cookiecutter.opbeat == 'y' -%}
 # Opbeat integration
 # See https://opbeat.com/languages/django/
 # -----------------------------------------------------------------------------
@@ -129,7 +129,7 @@ LOGGING['loggers']['opbeat.errors'] = {
     'handlers': ['console'],
     'propagate': False,
 }
-logging['root']['handlers'] += 'opbeat'
+LOGGING['root']['handlers'] += ['opbeat']
 {% endif %}
 {%- if cookiecutter.sentry == 'y' -%}
 
@@ -157,5 +157,5 @@ LOGGING['loggers']['sentry.errors'] = {
     'handlers': ['console'],
     'propagate': False,
 }
-logging['root']['handlers'] += 'sentry'
-{% endif %}
+LOGGING['root']['handlers'] += ['sentry']
+{% endif -%}

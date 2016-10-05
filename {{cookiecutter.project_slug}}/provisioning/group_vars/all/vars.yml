@@ -163,3 +163,10 @@ env_vars:
 #
 
 ssl: no
+
+nginx_site_confs:
+  - {
+      file: "site.conf",
+      directory: "{{ nginx_confd_dir }}",
+      filename: "{{ fqdn }}.conf"
+  }
