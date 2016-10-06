@@ -24,9 +24,3 @@
 - name: postmap sasl
   command: /usr/sbin/postmap {{ postfix_config_dir }}/sasl_passwd
   become: yes
-
-- name: send test email
-  shell: >
-    echo "This is a test message from Ansible configuration of {{ ansible_hostname }} at $(date -R)" | sendmail {{ postfix_notify_email }}
-  when: postfix_notify_email
-  become: yes

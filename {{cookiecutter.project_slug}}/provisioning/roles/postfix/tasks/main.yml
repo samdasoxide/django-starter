@@ -42,7 +42,6 @@
     backup: yes
   notify:
     - restart postfix
-    - send test email
   become: yes
 
 - name: Configure root user email forwarding

@@ -14,23 +14,19 @@ django_projects_dir: /usr/local/django
 base_dir: "{{ django_projects_dir }}/{{ fqdn }}"
 django_dir: "{{ base_dir }}/{{ project_slug }}"
 
+virtualenv_root: "{{ django_projects_dir }}/virtualenvs"
+virtualenv_path: "{{ virtualenv_root }}/{{ project_slug }}"
+
 #
 # users
 #
 
-deployment_user: "{{ project_slug }}"
+deployment_user: "{{ project_slug|replace('_', '-') }}"
 
 users:
   - name: "{{ deployment_user }}"
     state: present
     groups: deployment
-
-#
-# virtualenv
-#
-
-virtualenv_root: "{{ django_projects_dir }}/virtualenvs"
-virtualenv_path: "{{ virtualenv_root }}/{{ project_slug }}"
 
 #
 # letsencrypt

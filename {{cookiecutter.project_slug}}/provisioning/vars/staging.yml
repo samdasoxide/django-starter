@@ -5,7 +5,35 @@
 # general
 #
 
-deployment_slug: "{{ project_slug }}-staging"
 env: staging
-
+deployment_slug: "{{ project_slug }}_staging"
 fqdn: staging.{{ fqdn }}
+
+#
+# django
+#
+
+django_projects_dir: /usr/local/django
+base_dir: "{{ django_projects_dir }}/{{ fqdn }}"
+django_dir: "{{ base_dir }}/{{ project_slug }}"
+
+virtualenv_root: "{{ django_projects_dir }}/virtualenvs"
+virtualenv_path: "{{ virtualenv_root }}/{{ deployment_slug }}"
+
+#
+# users
+#
+
+deployment_user: "{{ deployment_slug }}"
+
+users:
+  - name: "{{ deployment_user }}"
+    state: present
+    groups: deployment
+
+deployment_database:
+  name: "{{ deployment_slug }}"
+  username: "{{ deployment_slug }}"
+  pass: "stagingdb"
+  encrypted: no
+  postgis: no
