@@ -4,5 +4,5 @@ ConcurrentLogHandler==0.9.1
 opbeat==3.4.0
 {%- endif %}
 {%- if cookiecutter.sentry == "y" %}
-raven==5.28.0
+raven==5.29.0
 {%- endif %}
