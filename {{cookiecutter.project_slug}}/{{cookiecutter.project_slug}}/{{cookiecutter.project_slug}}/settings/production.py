@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
-from .base import *  # NOQA
+from .base import *  # noqa
 
 # Database config
 # -----------------------------------------------------------------------------
@@ -108,15 +108,16 @@ LOGGING = {
 # Opbeat integration
 # See https://opbeat.com/languages/django/
 # -----------------------------------------------------------------------------
-INSTALLED_APPS += ['opbeat.contrib.django']
+INSTALLED_APPS += ['opbeat.contrib.django']  # noqa: F405
 OPBEAT = {
     'ORGANIZATION_ID': os.getenv('CFG_OPBEAT_ORGANIZATION_ID'),
     'APP_ID': os.getenv('CFG_OPBEAT_APP_ID'),
     'SECRET_TOKEN': os.getenv('CFG_OPBEAT_SECRET_TOKEN'),
 }
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
-) + MIDDLEWARE_CLASSES
+] + MIDDLEWARE_CLASSES  # noqa: F405
+
 
 # configure opbeat handler
 LOGGING['handlers']['opbeat'] = {
