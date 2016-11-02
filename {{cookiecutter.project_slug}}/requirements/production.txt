@@ -1,7 +1,7 @@
 -r base.txt
 ConcurrentLogHandler==0.9.1
 {%- if cookiecutter.opbeat == "y" %}
-opbeat==3.5.0
+opbeat==3.5.1
 {%- endif %}
 {%- if cookiecutter.sentry == "y" %}
 raven==5.31.0
